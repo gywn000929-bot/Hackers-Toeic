@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>해커스 토익 기출 보카 | 인터랙티브 전자책</title>
+
+<!-- ── 홈 화면 추가(앱) / PWA ── -->
+<meta name="theme-color" content="#1b2a4a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="해커스 보카">
+<meta name="application-name" content="해커스 보카">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -590,10 +602,135 @@
   }
   .speed-time { font-size: 1.3rem; color: #ffd76b; }
 
+  /* ── 암기(플래시카드 / 간격 반복) 모드 ── */
+  .fc-wrap { max-width: 560px; margin: 0 auto; padding-top: 4px; }
+  .fc-topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .fc-progress-track { flex: 1; height: 8px; background: var(--gray-mid); border-radius: 4px; overflow: hidden; }
+  .fc-progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s ease; }
+  .fc-remain { font-size: 0.76rem; font-weight: 700; color: var(--navy); min-width: 74px; text-align: right; }
+  .flashcard {
+    background: var(--white); border: 1px solid var(--gray-mid); border-radius: 18px;
+    padding: 26px 24px 30px; text-align: center;
+    box-shadow: 0 4px 18px rgba(40,40,50,0.06);
+    min-height: 240px; display: flex; flex-direction: column; justify-content: center;
+    animation: floatUp 0.22s ease;
+  }
+  .fc-meta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; }
+  .fc-chip { font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: var(--navy-soft); color: var(--accent); }
+  .fc-chip.new { background: #eef7f1; color: var(--green-dot); }
+  .fc-chip.day { background: var(--gray-light); color: var(--gray-text); border: 1px solid var(--gray-mid); }
+  .fc-word { font-family: 'Lexend','Pretendard',sans-serif; font-size: 2.3rem; font-weight: 800; color: var(--navy); letter-spacing: -0.5px; line-height: 1.15; }
+  .fc-word-kr { font-size: 1.9rem; font-weight: 800; color: var(--navy); line-height: 1.3; }
+  .fc-pron { font-family: 'Noto Serif','Pretendard',serif; font-size: 1.02rem; color: var(--navy-light); margin-top: 8px; }
+  .fc-front-hint { font-size: 0.78rem; color: var(--gray-text); margin-top: 14px; }
+  .fc-divider { height: 1px; background: var(--gray-mid); margin: 16px auto; width: 80%; }
+  .fc-meaning-row { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .fc-meaning { font-size: 1.45rem; font-weight: 800; color: var(--navy); }
+  .fc-example { font-family: 'Lexend','Pretendard',sans-serif; font-size: 0.96rem; line-height: 1.6; color: var(--navy); margin-top: 12px; }
+  .fc-example b { color: var(--accent); font-weight: 700; }
+  .fc-example-kr { font-size: 0.86rem; color: var(--gray-text); margin-top: 4px; line-height: 1.55; }
+  .fc-deriv { font-size: 0.8rem; color: var(--gray-text); margin-top: 10px; }
+  .fc-reveal-btn {
+    display: block; width: 100%; max-width: 320px; margin: 18px auto 0;
+    background: var(--navy); color: #fff; border: none; border-radius: 12px;
+    padding: 14px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: background 0.18s;
+  }
+  .fc-reveal-btn:hover { background: var(--accent); }
+  .fc-rate { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 16px; }
+  .fc-btn {
+    border: none; border-radius: 12px; padding: 12px 4px; cursor: pointer;
+    font-family: inherit; font-weight: 800; color: #fff; font-size: 0.95rem;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    transition: transform 0.1s, filter 0.15s;
+  }
+  .fc-btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+  .fc-btn .fc-when { font-size: 0.66rem; font-weight: 600; opacity: 0.92; }
+  .fc-btn.again { background: #d94a5f; }
+  .fc-btn.hard  { background: #e0972f; }
+  .fc-btn.good  { background: var(--green-dot); }
+  .fc-btn.easy  { background: var(--accent); }
+  .fc-help { text-align: center; font-size: 0.73rem; color: var(--gray-text); margin-top: 12px; }
+  .fc-dir-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .fc-dir-btn {
+    flex: 1; padding: 10px; border: 1.5px solid var(--gray-mid); background: var(--white);
+    border-radius: 12px; cursor: pointer; font-family: inherit; font-weight: 700;
+    color: var(--navy-light); font-size: 0.9rem; transition: all 0.15s;
+  }
+  .fc-dir-btn.active { border-color: var(--accent); background: var(--navy-soft); color: var(--accent); }
+  .anki-stat-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .anki-stat {
+    flex: 1; background: var(--white); border: 1px solid var(--gray-mid);
+    border-radius: 12px; padding: 14px 10px; text-align: center;
+  }
+  .anki-stat .as-num { font-size: 1.6rem; font-weight: 800; line-height: 1; }
+  .anki-stat .as-label { font-size: 0.72rem; color: var(--gray-text); font-weight: 600; margin-top: 5px; }
+
   /* scrollbar */
   .sidebar::-webkit-scrollbar, .main::-webkit-scrollbar { width: 5px; }
   .sidebar::-webkit-scrollbar-track, .main::-webkit-scrollbar-track { background: transparent; }
   .sidebar::-webkit-scrollbar-thumb { background: var(--gray-mid); border-radius: 3px; }
+
+  /* ── 모바일 반응형 (태블릿·폰) ── */
+  @media (max-width: 768px) {
+    /* 헤더: 제목 위 / 검색+버튼 아래로 세로 정렬 */
+    .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; }
+    .header-title { font-size: 1.02rem; }
+    .header-right { width: 100%; gap: 6px; }
+    .search-box { flex: 1; width: auto; min-width: 0; }
+    .mode-btn { padding: 8px 12px; }
+
+    /* 레이아웃: 가로 3단 → 세로 스택, 페이지 전체 스크롤 */
+    .layout { flex-direction: column; height: auto; }
+
+    /* 사이드바: 상단 가로 스크롤 칩으로 변환 */
+    .sidebar {
+      width: 100%; min-width: 0; height: auto;
+      display: flex; flex-direction: row; flex-wrap: nowrap;
+      overflow-x: auto; overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      border-right: none; border-bottom: 1px solid var(--gray-mid);
+      padding: 10px 12px; gap: 8px;
+      position: sticky; top: 0; z-index: 90;
+    }
+    .sidebar-title { display: none; }
+    .day-btn {
+      flex: 0 0 auto; width: auto;
+      border: 1px solid var(--gray-mid); border-radius: 20px;
+      padding: 7px 13px; gap: 7px; white-space: nowrap;
+    }
+    .day-btn.active { border-color: var(--accent); border-right: 1px solid var(--accent); }
+    .day-btn .day-topic { display: none; }
+
+    /* 본문: 내부 스크롤 해제(페이지 스크롤에 위임), 여백 축소 */
+    .main { overflow: visible; padding: 18px 16px; }
+
+    /* DAY 헤더: 가로 배치 → 세로 스택 (글자 세로 쪼개짐 방지) */
+    .day-header { flex-direction: column; align-items: flex-start; gap: 14px; padding: 20px 20px; }
+    .day-badge { align-self: flex-start; }
+    .day-info { width: 100%; }
+    .day-story { font-size: 1.18rem; }
+    .day-count { align-self: flex-start; }
+
+    .result-stats { flex-wrap: wrap; gap: 16px; }
+
+    /* 암기 모드 모바일 */
+    .fc-btn { padding: 11px 3px; font-size: 0.84rem; }
+    .fc-btn .fc-when { font-size: 0.6rem; }
+    .fc-word { font-size: 2rem; }
+    .fc-word-kr { font-size: 1.6rem; }
+    .fc-rate { gap: 6px; }
+    .anki-stat-row { gap: 8px; }
+    .anki-stat .as-num { font-size: 1.35rem; }
+  }
+
+  @media (max-width: 420px) {
+    .header-right { flex-wrap: wrap; }
+    .search-box { flex: 1 0 100%; order: 3; }
+    .main { padding: 14px 12px; }
+    .day-header { padding: 16px 16px; }
+    .day-story { font-size: 1.08rem; }
+  }
 </style>
 </head>
 <body>
@@ -606,6 +743,7 @@
   <div class="header-right">
     <input type="text" class="search-box" placeholder="🔍 단어 검색..." id="searchInput" oninput="handleSearch(this.value)">
     <button class="mode-btn active" onclick="setMode('study')" id="btnStudy">📚 학습</button>
+    <button class="mode-btn" onclick="setMode('anki')" id="btnAnki">🃏 암기</button>
     <button class="mode-btn" onclick="setMode('quiz')" id="btnQuiz">🎯 퀴즈</button>
   </div>
 </div>
@@ -8884,8 +9022,17 @@ const DAYS = [
 // STATE
 // ====================================================
 let currentDay = 1;
-let mode = 'study'; // 'study' | 'quiz'
+let mode = 'study'; // 'study' | 'anki' | 'quiz'
 let checked = JSON.parse(localStorage.getItem('hv_checked') || '{}');
+// 암기(간격 반복) 상태
+let srs = JSON.parse(localStorage.getItem('hv_srs') || '{}'); // key -> {due,interval,ease,reps,lapses}
+let ankiQueue = [];
+let ankiIndex = 0;
+let ankiFlipped = false;
+let ankiRange = 'all';
+let ankiDir = 'en'; // 'en': 영어→뜻 / 'kr': 뜻→영어
+let ankiNewLimit = 20;
+let ankiStats = {reviewed:0, again:0, total:0};
 let quizQueue = [];
 let quizIndex = 0;
 let quizDayTarget = 'all';
@@ -9111,10 +9258,255 @@ function handleSearch(query) {
 // ====================================================
 function setMode(m) {
   mode = m;
+  clearInterval(gTimer); clearInterval(speedTimer); speedActive = false;
   document.getElementById('btnStudy').className = 'mode-btn' + (m==='study'?' active':'');
   document.getElementById('btnQuiz').className = 'mode-btn' + (m==='quiz'?' active':'');
-  if(m==='study') { showDay(currentDay); document.getElementById('sidebar').style.display=''; }
+  const ab = document.getElementById('btnAnki'); if(ab) ab.className = 'mode-btn' + (m==='anki'?' active':'');
+  if(m==='study') { document.getElementById('sidebar').style.display=''; showDay(currentDay); }
+  else if(m==='anki') { document.getElementById('sidebar').style.display='none'; showAnkiSetup(); }
   else { document.getElementById('sidebar').style.display='none'; showQuizSetup(); }
+}
+
+// ====================================================
+// 암기 모드 (SM-2 간격 반복 플래시카드)
+// ====================================================
+function saveSrs() { try { localStorage.setItem('hv_srs', JSON.stringify(srs)); } catch(e) {} }
+function todayEpoch() { return Math.floor(Date.now() / 86400000); }
+function fmtInterval(days) {
+  if(days <= 0) return '지금';
+  if(days === 1) return '1일';
+  if(days < 30) return days + '일';
+  if(days < 365) return Math.round(days/30) + '개월';
+  return (Math.round(days/36.5)/10) + '년';
+}
+// grade: 0 다시 / 1 어려움 / 2 좋음 / 3 쉬움. preview=true면 계산만 하고 저장 안 함
+function computeSchedule(prev, grade) {
+  const t = todayEpoch();
+  const c = prev ? Object.assign({}, prev)
+                 : {interval:0, ease:2.5, reps:0, lapses:0, due:t};
+  if(grade === 0) {
+    c.reps = 0; c.lapses = (c.lapses||0) + 1;
+    c.ease = Math.max(1.3, c.ease - 0.2);
+    c.interval = 0; c.due = t;
+  } else {
+    if(grade === 1) {
+      c.ease = Math.max(1.3, c.ease - 0.15);
+      c.interval = c.reps === 0 ? 1 : Math.max(1, Math.round(c.interval * 1.2));
+    } else if(grade === 2) {
+      c.interval = c.reps === 0 ? 1 : (c.reps === 1 ? 3 : Math.round(c.interval * c.ease));
+    } else {
+      c.ease = c.ease + 0.15;
+      c.interval = c.reps === 0 ? 3 : Math.round(c.interval * c.ease * 1.3);
+    }
+    c.reps = (c.reps||0) + 1;
+    c.interval = Math.max(1, c.interval);
+    c.due = t + c.interval;
+  }
+  return c;
+}
+
+function collectAnkiCards(range) {
+  const t = todayEpoch();
+  const due = [], fresh = [];
+  DAYS.forEach(d => {
+    if(range === 'all' || parseInt(range) === d.num) {
+      d.words.forEach(w => {
+        if(!w.en || !w.kr) return;
+        const key = `${d.num}_${w.n}`;
+        const c = srs[key];
+        if(!c) fresh.push({day:d.num, word:w, key});
+        else if(c.due <= t) due.push({day:d.num, word:w, key});
+      });
+    }
+  });
+  return {due, fresh};
+}
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+function showAnkiSetup() {
+  const mc = document.getElementById('mainContent');
+  let opts = '<option value="all">전체 (30 Days)</option>';
+  DAYS.forEach(d => opts += `<option value="${d.num}"${String(d.num)===String(ankiRange)?' selected':''}>DAY ${String(d.num).padStart(2,'0')} - ${d.story}</option>`);
+  const {due, fresh} = collectAnkiCards(ankiRange);
+  mc.innerHTML = `
+  <div style="max-width:560px;margin:0 auto;padding-top:10px">
+    <div style="font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:6px">🃏 암기 카드 <span style="font-size:0.8rem;font-weight:600;color:var(--gray-text)">간격 반복</span></div>
+    <div style="font-size:0.88rem;color:var(--gray-text);margin-bottom:18px;line-height:1.6">안키처럼 단어를 뒤집어 보며 <b>다시·어려움·좋음·쉬움</b>으로 평가하면, 각 카드의 다음 복습 날짜가 자동으로 조절됩니다.</div>
+
+    <div class="anki-stat-row">
+      <div class="anki-stat"><div class="as-num" style="color:var(--accent)" id="ankiDueN">${due.length}</div><div class="as-label">복습 예정</div></div>
+      <div class="anki-stat"><div class="as-num" style="color:var(--green-dot)" id="ankiNewN">${fresh.length}</div><div class="as-label">새 카드</div></div>
+      <div class="anki-stat"><div class="as-num" style="color:var(--navy)" id="ankiSrsN">${Object.keys(srs).length}</div><div class="as-label">학습한 카드</div></div>
+    </div>
+
+    <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:8px">카드 방향</div>
+    <div class="fc-dir-row">
+      <button class="fc-dir-btn${ankiDir==='en'?' active':''}" onclick="pickDir('en')">영어 → 뜻</button>
+      <button class="fc-dir-btn${ankiDir==='kr'?' active':''}" onclick="pickDir('kr')">뜻 → 영어</button>
+    </div>
+
+    <div class="quiz-day-select" style="flex-wrap:wrap">
+      <label>학습 범위</label>
+      <select id="ankiRangeSelect" onchange="ankiRange=this.value;showAnkiSetup()">${opts}</select>
+      <label style="margin-left:6px">새 카드</label>
+      <select id="ankiNewLimit" onchange="ankiNewLimit=parseInt(this.value)">
+        ${[10,20,30,50,999].map(n=>`<option value="${n}"${n===ankiNewLimit?' selected':''}>${n===999?'제한 없음':n+'개'}</option>`).join('')}
+      </select>
+      <button class="start-quiz-btn" onclick="startAnki()">▶ 학습 시작</button>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--gray-mid);border-radius:14px;padding:16px 18px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:0.86rem;font-weight:700;color:var(--navy)">🗓️ 오늘 학습할 카드</div>
+        <button onclick="resetSrs()" style="font-size:0.72rem;font-weight:600;color:var(--gray-text);background:var(--gray-light);border:1px solid var(--gray-mid);border-radius:8px;padding:5px 11px;cursor:pointer">↺ 암기 기록 초기화</button>
+      </div>
+      <div style="font-size:0.82rem;color:var(--gray-text);margin-top:8px;line-height:1.6">
+        복습 예정 <b style="color:var(--accent)">${due.length}개</b> + 새 카드 <b style="color:var(--green-dot)">${Math.min(fresh.length, ankiNewLimit)}개</b> = 이번 세션 <b style="color:var(--navy)">${due.length + Math.min(fresh.length, ankiNewLimit)}개</b>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pickDir(dir) {
+  ankiDir = dir;
+  document.querySelectorAll('.fc-dir-btn').forEach((b,i) => b.classList.toggle('active', (i===0)===(dir==='en')));
+}
+
+function resetSrs() {
+  if(!confirm('암기(간격 반복) 학습 기록을 초기화할까요?\n모든 카드의 복습 일정이 사라지고 새 카드로 돌아갑니다.')) return;
+  srs = {};
+  try { localStorage.removeItem('hv_srs'); } catch(e) {}
+  showAnkiSetup();
+}
+
+function startAnki() {
+  const sel = document.getElementById('ankiRangeSelect'); if(sel) ankiRange = sel.value;
+  const nl = document.getElementById('ankiNewLimit'); if(nl) ankiNewLimit = parseInt(nl.value);
+  const {due, fresh} = collectAnkiCards(ankiRange);
+  shuffle(due); shuffle(fresh);
+  const session = due.concat(fresh.slice(0, ankiNewLimit));
+  if(session.length === 0) {
+    const mc = document.getElementById('mainContent');
+    mc.innerHTML = `
+    <div class="result-card">
+      <div class="result-emoji">🎉</div>
+      <div class="result-title">복습할 카드가 없어요!</div>
+      <div class="result-grade">이 범위의 카드를 모두 학습했고, 아직 복습할 때가 되지 않았어요.</div>
+      <button class="start-quiz-btn" onclick="showAnkiSetup()">📋 설정으로</button>
+    </div>`;
+    return;
+  }
+  shuffle(session);
+  ankiQueue = session; ankiIndex = 0; ankiFlipped = false;
+  ankiStats = {reviewed:0, again:0, total:session.length};
+  showFlashcard();
+}
+
+function showFlashcard() {
+  const mc = document.getElementById('mainContent');
+  if(ankiIndex >= ankiQueue.length) { showAnkiResult(); return; }
+  const {day, word:w, key} = ankiQueue[ankiIndex];
+  const c = srs[key];
+  const isNew = !c;
+  const chip = isNew
+    ? '<span class="fc-chip new">🆕 새 카드</span>'
+    : `<span class="fc-chip">🔁 복습 ${c.reps||0}회</span>`;
+  const remain = ankiQueue.length - ankiIndex;
+  const pct = ankiQueue.length ? Math.round(ankiIndex / ankiQueue.length * 100) : 0;
+
+  // 앞면 (방향에 따라)
+  const frontHtml = ankiDir === 'en'
+    ? `<div class="fc-word">${w.en}</div>${w.pron?`<div class="fc-pron">${w.pron}</div>`:''}`
+    : `<div class="fc-word-kr">${w.kr}</div><div class="fc-pron" style="margin-top:10px"><span class="word-pos ${posClass(w.pos)}">${posLabel(w.pos)}</span></div>`;
+
+  let inner;
+  if(!ankiFlipped) {
+    inner = `
+      <div class="fc-meta">${chip}<span class="fc-chip day">DAY ${String(day).padStart(2,'0')}</span></div>
+      ${frontHtml}
+      <div class="fc-front-hint">${ankiDir==='en'?'뜻을 떠올려 보세요':'영어 단어를 떠올려 보세요'}</div>
+      <button class="fc-reveal-btn" onclick="flipCard()">👀 정답 보기 <span style="opacity:.7;font-weight:600">(Space)</span></button>`;
+  } else {
+    // 뒷면: 항상 단어 + 발음 + 품사 + 뜻 + 예문 전체
+    const example = w.ex ? `<div class="fc-example">${w.ex}</div>${w.exkr?`<div class="fc-example-kr">${w.exkr}</div>`:''}` : '';
+    const deriv = w.deriv ? `<div class="fc-deriv">↳ ${w.deriv}</div>` : '';
+    const b0 = fmtInterval(computeSchedule(c,0).interval);
+    const b1 = fmtInterval(computeSchedule(c,1).interval);
+    const b2 = fmtInterval(computeSchedule(c,2).interval);
+    const b3 = fmtInterval(computeSchedule(c,3).interval);
+    inner = `
+      <div class="fc-meta">${chip}<span class="fc-chip day">DAY ${String(day).padStart(2,'0')}</span></div>
+      <div class="fc-word">${w.en}${starsHtml(w.stars)}</div>
+      ${w.pron?`<div class="fc-pron">${w.pron}</div>`:''}
+      <div class="fc-divider"></div>
+      <div class="fc-meaning-row"><span class="word-pos ${posClass(w.pos)}">${posLabel(w.pos)}</span><span class="fc-meaning">${w.kr}</span></div>
+      ${example}${deriv}`;
+  }
+
+  const rate = ankiFlipped ? `
+    <div class="fc-rate">
+      <button class="fc-btn again" onclick="rateCard(0)">다시<span class="fc-when">${fmtInterval(computeSchedule(c,0).interval)}</span></button>
+      <button class="fc-btn hard" onclick="rateCard(1)">어려움<span class="fc-when">${fmtInterval(computeSchedule(c,1).interval)}</span></button>
+      <button class="fc-btn good" onclick="rateCard(2)">좋음<span class="fc-when">${fmtInterval(computeSchedule(c,2).interval)}</span></button>
+      <button class="fc-btn easy" onclick="rateCard(3)">쉬움<span class="fc-when">${fmtInterval(computeSchedule(c,3).interval)}</span></button>
+    </div>
+    <div class="fc-help">키보드: 1 다시 · 2 어려움 · 3 좋음 · 4 쉬움</div>` : '';
+
+  mc.innerHTML = `
+  <div class="fc-wrap">
+    <div class="fc-topbar">
+      <div class="fc-progress-track"><div class="fc-progress-fill" style="width:${pct}%"></div></div>
+      <div class="fc-remain">남은 ${remain}장</div>
+    </div>
+    <div class="flashcard">${inner}</div>
+    ${rate}
+    <div class="quiz-skip-row"><button class="quiz-skip-btn" onclick="showAnkiSetup()">⏹ 학습 종료</button></div>
+  </div>`;
+}
+
+function flipCard() {
+  if(mode !== 'anki') return;
+  if(ankiIndex >= ankiQueue.length) return;
+  ankiFlipped = true;
+  showFlashcard();
+}
+
+function rateCard(grade) {
+  if(!ankiFlipped) return;
+  const item = ankiQueue[ankiIndex];
+  const c = computeSchedule(srs[item.key], grade);
+  srs[item.key] = c; saveSrs();
+  ankiStats.reviewed++;
+  if(grade === 0) {
+    ankiStats.again++;
+    // '다시'는 이번 세션에서 몇 장 뒤에 다시 등장
+    const insertAt = Math.min(ankiQueue.length, ankiIndex + 4);
+    ankiQueue.splice(insertAt, 0, item);
+  } else {
+    // 학습 진도에도 반영
+    checked[item.key] = true; saveChecked();
+  }
+  ankiIndex++; ankiFlipped = false;
+  showFlashcard();
+}
+
+function showAnkiResult() {
+  const mc = document.getElementById('mainContent');
+  const {reviewed, again, total} = ankiStats;
+  const passed = reviewed - again;
+  mc.innerHTML = `
+  <div class="result-card">
+    <div class="result-emoji">🃏</div>
+    <div class="result-title">암기 세션 완료!</div>
+    <div class="result-grade">오늘도 꾸준히 해냈어요. 다음 복습은 각 카드 일정에 맞춰 준비돼요.</div>
+    <div class="result-stats">
+      <div class="result-stat"><div class="rs-num" style="color:var(--navy)">${total}</div><div class="rs-label">학습한 카드</div></div>
+      <div class="result-stat"><div class="rs-num ok">${passed}</div><div class="rs-label">기억함</div></div>
+      <div class="result-stat"><div class="rs-num no">${again}</div><div class="rs-label">다시</div></div>
+    </div>
+    <button class="start-quiz-btn" onclick="startAnki()">🔄 이어서 복습</button>
+    <button class="start-quiz-btn" style="background:var(--navy-light);margin-left:8px" onclick="showAnkiSetup()">📋 설정으로</button>
+  </div>`;
 }
 
 function showQuizSetup() {
@@ -9446,6 +9838,19 @@ function showResult() {
 // ====================================================
 // INIT
 // ====================================================
+// 암기 모드 키보드 단축키 (Space: 뒤집기 / 1~4: 평가)
+document.addEventListener('keydown', e => {
+  if(mode !== 'anki' || !ankiQueue.length || ankiIndex >= ankiQueue.length) return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  if(!ankiFlipped) {
+    if(e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+  } else {
+    if(['1','2','3','4'].includes(e.key)) { e.preventDefault(); rateCard(parseInt(e.key)-1); }
+    else if(e.key === ' ' || e.key === 'Enter') { e.preventDefault(); rateCard(2); }
+  }
+});
+
 buildSidebar();
 showDay(1);
 </script>

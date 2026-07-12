@@ -1,0 +1,19 @@
+{
+  "name": "해커스 토익 기출 보카",
+  "short_name": "해커스 보카",
+  "description": "해커스 토익 기출 보카 인터랙티브 전자책 · 30일 완성 · 학습 / 암기(간격 반복) / 퀴즈",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./hackers_toeic_vocab_30.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f9fc",
+  "theme_color": "#1b2a4a",
+  "categories": ["education", "books"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

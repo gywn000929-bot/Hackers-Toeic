@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>매일 영어 · OPIc IH 실전 표현 1000 — 활용 가이드</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --ink:#16233d; --ink2:#46536c; --ink3:#7c8698;
+  --blue:#2f5fd0; --blue-bg:#eef3fd;
+  --teal:#0f7a72; --teal-bg:#e6f4f2;
+  --amber:#b8792a; --amber-bg:#fbf1e2;
+  --ok:#2f9461; --no:#d1495b;
+  --line:#dfe5ef; --soft:#f5f8fc; --paper:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{ size:A4; margin:15mm 14mm 14mm; }
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{
+  font-family:'Pretendard',sans-serif; color:var(--ink);
+  font-size:10.2pt; line-height:1.65; background:var(--paper);
+  word-break:keep-all; -webkit-font-smoothing:antialiased;
+}
+.page{page-break-after:always}
+.page:last-child{page-break-after:auto}
+h1,h2,h3{line-height:1.3; letter-spacing:-.4px}
+
+/* ---------- 표지 ---------- */
+.cover{height:250mm;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.cover-icon{width:74px;height:74px;border-radius:18px;margin:0 auto 26px;display:block}
+.cover h1{font-size:27pt;font-weight:700;letter-spacing:-1.2px;margin-bottom:10px}
+.cover .sub{font-size:12pt;color:var(--ink2);font-weight:500;margin-bottom:4px}
+.cover .sub b{color:var(--blue);font-weight:700}
+.cover .kicker{font-size:8.5pt;letter-spacing:2.6px;color:var(--ink3);font-weight:600;margin-bottom:20px}
+.cover-rule{width:44px;height:3px;background:var(--blue);margin:26px auto 30px;border-radius:2px}
+.cover-stats{display:flex;justify-content:center;gap:0;margin-bottom:34px}
+.cover-stats div{padding:0 22px;border-right:1px solid var(--line)}
+.cover-stats div:last-child{border-right:none}
+.cover-stats b{display:block;font-size:19pt;font-weight:700;letter-spacing:-.8px}
+.cover-stats span{font-size:8.5pt;color:var(--ink3);font-weight:600}
+.qr-box{display:inline-flex;align-items:center;gap:18px;border:1px solid var(--line);
+  border-radius:14px;padding:16px 22px;background:var(--soft);margin:0 auto}
+.qr-box img{width:88px;height:88px;display:block}
+.qr-txt{text-align:left}
+.qr-txt .t{font-size:9.5pt;font-weight:700;margin-bottom:5px}
+.qr-txt .u{font-size:7.8pt;color:var(--blue);font-weight:600;word-break:break-all;line-height:1.5;max-width:56mm}
+.qr-txt .n{font-size:7.6pt;color:var(--ink3);margin-top:6px;line-height:1.5}
+
+/* ---------- 섹션 ---------- */
+.sec-num{font-size:8pt;font-weight:700;letter-spacing:2px;color:var(--blue);margin-bottom:6px}
+h2{font-size:16pt;font-weight:700;margin-bottom:6px}
+.lead{font-size:9.6pt;color:var(--ink2);margin-bottom:18px;line-height:1.6}
+h3{font-size:11pt;font-weight:700;margin:20px 0 8px}
+h3:first-of-type{margin-top:0}
+p{margin-bottom:9px}
+strong{font-weight:700}
+.hl{background:var(--blue-bg);color:var(--blue);padding:1px 5px;border-radius:4px;font-weight:600}
+
+/* 단계 */
+.steps{counter-reset:st;margin:0 0 6px}
+.step{position:relative;padding-left:32px;margin-bottom:13px;counter-increment:st}
+.step::before{content:counter(st);position:absolute;left:0;top:1px;width:21px;height:21px;
+  border-radius:7px;background:var(--ink);color:#fff;font-size:8.5pt;font-weight:700;
+  display:flex;align-items:center;justify-content:center}
+.step b{display:block;font-size:10.2pt;margin-bottom:2px}
+.step span{font-size:9.3pt;color:var(--ink2);line-height:1.6}
+
+/* 박스 */
+.note{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 9px 9px 0;
+  padding:11px 14px;margin:14px 0;font-size:9.2pt;line-height:1.65}
+.note b{color:var(--amber)}
+.warn{border-left:3px solid var(--no);background:#fbebed;border-radius:0 9px 9px 0;
+  padding:11px 14px;margin:14px 0;font-size:9.2pt;line-height:1.65}
+.warn b{color:var(--no)}
+.tipbox{border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:13px 15px;margin:14px 0}
+.tipbox .h{font-size:8.4pt;font-weight:700;letter-spacing:.8px;color:var(--ink3);margin-bottom:7px}
+.tipbox ul{margin:0;padding-left:16px}
+.tipbox li{font-size:9.3pt;margin-bottom:4px;line-height:1.6}
+
+/* 표 */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:9.2pt}
+th{background:var(--ink);color:#fff;font-weight:600;text-align:left;padding:8px 10px;font-size:8.8pt}
+th:first-child{border-radius:7px 0 0 0}
+th:last-child{border-radius:0 7px 0 0}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+td.k{font-weight:700;white-space:nowrap;width:26%}
+.tbl-tight td{padding:6px 10px}
+
+/* 탭 카드 */
+.tabs{display:flex;flex-direction:column;gap:9px;margin:12px 0}
+.tab{display:flex;gap:12px;border:1px solid var(--line);border-radius:11px;padding:12px 14px;
+  border-left:3px solid var(--c,var(--blue))}
+.tab .ic{font-size:15pt;line-height:1;flex:0 0 auto;width:22px;text-align:center}
+.tab .bd{flex:1}
+.tab .nm{font-size:10pt;font-weight:700;margin-bottom:2px;color:var(--c,var(--blue))}
+.tab .ds{font-size:9.2pt;color:var(--ink2);line-height:1.6}
+
+/* 채점 버튼 */
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:13px 0}
+.gr{border:1px solid var(--line);border-radius:10px;padding:11px 8px;text-align:center}
+.gr b{display:block;font-size:10pt;font-weight:700;margin-bottom:3px}
+.gr span{font-size:8.2pt;color:var(--ink3);line-height:1.5;display:block}
+.gr.g1{border-color:#f0b8bf;background:#fdf2f4} .gr.g1 b{color:var(--no)}
+.gr.g4{border-color:#a8ddc2;background:#f0f9f4} .gr.g4 b{color:var(--ok)}
+
+/* 루틴 */
+.routine{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin:13px 0}
+.routine .hd{background:var(--soft);padding:10px 14px;font-size:9.6pt;font-weight:700;
+  border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+.routine .hd em{font-style:normal;color:var(--blue);font-weight:700}
+.routine .bd{padding:12px 14px}
+.routine ol{margin:0;padding-left:17px}
+.routine li{font-size:9.3pt;margin-bottom:5px;line-height:1.6}
+.routine li:last-child{margin-bottom:0}
+
+/* 주제 목록 */
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;margin:12px 0}
+.tp{font-size:9pt;display:flex;gap:7px;padding:4px 0;border-bottom:1px solid var(--soft)}
+.tp b{color:var(--ink3);font-weight:600;width:16px;flex:0 0 auto}
+
+/* 푸터 */
+.foot{margin-top:26px;padding-top:12px;border-top:1px solid var(--line);
+  font-size:8pt;color:var(--ink3);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<!-- ============ 표지 ============ -->
+<section class="page cover">
+  <img class="cover-icon" src="data:image/png;base64,__ICON__" alt="">
+  <div class="kicker">OPIC IH · DAILY ENGLISH</div>
+  <h1>매일 영어 · 실전 표현 1000</h1>
+  <div class="sub">일상에서 실제로 쓰는 <b>OPIc IH 수준</b> 영어를</div>
+  <div class="sub">아이폰에 앱으로 담아 매일 조금씩</div>
+  <div class="cover-rule"></div>
+  <div class="cover-stats">
+    <div><b>1000</b><span>단어·숙어·문장</span></div>
+    <div><b>20</b><span>주제</span></div>
+    <div><b>안키식</b><span>간격 반복 복습</span></div>
+  </div>
+  <div><div class="qr-box">
+    <img src="data:image/png;base64,__QR__" alt="QR 코드">
+    <div class="qr-txt">
+      <div class="t">카메라로 QR을 비추세요</div>
+      <div class="u">gywn000929-bot.github.io/<br>Hackers-Toeic/opic_ih_daily_english.html</div>
+      <div class="n">설치 앱 없음 · 로그인 없음 · 무료<br>한 번 열면 오프라인에서도 동작</div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ 1. 설치 ============ -->
+<section class="page">
+  <div class="sec-num">STEP 01</div>
+  <h2>아이폰에 앱으로 설치하기</h2>
+  <p class="lead">앱스토어에서 받는 앱이 아닙니다. 웹 주소를 홈 화면에 추가하면 아이콘이 생기고, 그때부터는 일반 앱과 똑같이 열립니다. 1분이면 끝납니다.</p>
+
+  <div class="warn"><b>반드시 사파리(Safari)로 여세요.</b> 크롬·네이버·카카오톡 안에서 열면 &lsquo;홈 화면에 추가&rsquo; 메뉴가 나오지 않습니다. 카톡으로 링크를 받았다면 오른쪽 아래 <strong>···</strong> → <strong>다른 브라우저로 열기 → Safari</strong>를 먼저 누르세요.</div>
+
+  <div class="steps">
+    <div class="step"><b>사파리로 주소를 엽니다</b><span>표지의 QR을 카메라로 비추거나, 받으신 링크를 사파리에서 엽니다.</span></div>
+    <div class="step"><b>화면 아래 공유 버튼을 누릅니다</b><span>가운데 아래에 있는 <strong>네모에서 화살표가 위로 나가는 모양</strong>입니다.</span></div>
+    <div class="step"><b>&lsquo;홈 화면에 추가&rsquo;를 찾습니다</b><span>메뉴를 아래로 스크롤하면 나옵니다. 안 보이면 맨 아래 <strong>작업 편집</strong>에서 켜주세요.</span></div>
+    <div class="step"><b>이름을 확인하고 &lsquo;추가&rsquo;</b><span>기본값은 <strong>매일 영어</strong>입니다. 원하는 이름으로 바꿔도 됩니다.</span></div>
+    <div class="step"><b>홈 화면에서 아이콘을 누릅니다</b><span>남색 바탕의 <strong>IH</strong> 아이콘이 생겼습니다. 이제 주소창 없이 전체 화면으로 열립니다.</span></div>
+  </div>
+
+  <div class="note"><b>왜 이렇게 하나요?</b> 홈 화면에서 열어야 주소창과 탭 바가 사라져 화면을 넓게 쓸 수 있고, 학습 기록도 안정적으로 보관됩니다. 사파리 탭으로만 열면 화면이 좁고, 브라우저 데이터를 지울 때 기록이 함께 날아갈 수 있습니다.</div>
+
+  <h3>설치하고 나면</h3>
+  <table class="tbl-tight">
+    <tr><td class="k">인터넷 없이</td><td>한 번 연 뒤에는 <strong>비행기 모드·지하철·해외</strong>에서도 그대로 열립니다. 1000개 내용이 전부 기기에 저장돼 있습니다.</td></tr>
+    <tr><td class="k">데이터 사용량</td><td>처음 한 번 약 <strong>230KB</strong>. 사진 한 장보다 적습니다. 이후에는 거의 쓰지 않습니다.</td></tr>
+    <tr><td class="k">로그인</td><td>필요 없습니다. 가입도, 개인정보 입력도 없습니다.</td></tr>
+    <tr><td class="k">학습 기록</td><td>서버가 아니라 <strong>이 아이폰 안에</strong> 저장됩니다. 아무도 볼 수 없습니다.</td></tr>
+  </table>
+  <div class="foot"><span>매일 영어 · OPIc IH 실전 표현 1000</span><span>1</span></div>
+</section>
+
+<!-- ============ 2. 화면 구조 ============ -->
+<section class="page">
+  <div class="sec-num">STEP 02</div>
+  <h2>화면 한눈에 보기</h2>
+  <p class="lead">앱을 열면 위에서 아래로 네 개의 층이 보입니다. 이것만 알면 나머지는 눌러보면서 익히면 됩니다.</p>
+
+  <h3>① 맨 위 — 제목과 버튼 세 개</h3>
+  <table class="tbl-tight">
+    <tr><td class="k">돋보기</td><td>1000개 전체에서 검색합니다. 영어·한글·예문 어느 쪽으로 찾아도 됩니다.</td></tr>
+    <tr><td class="k">눈 모양</td><td><strong>가리기 모드</strong>를 켭니다. 누를 때마다 <span class="hl">뜻 가리기 → 영어 가리기 → 끄기</span> 순으로 바뀝니다.</td></tr>
+    <tr><td class="k">줄 세 개</td><td>설정과 전체 학습 현황을 엽니다.</td></tr>
+  </table>
+
+  <h3>② 주제 칩 — 좌우로 넘기세요</h3>
+  <p>20개 주제가 가로로 늘어서 있습니다. <strong>손가락으로 좌우로 밀어서</strong> 원하는 주제를 고릅니다.</p>
+
+  <h3>③ 다섯 개의 탭</h3>
+  <div class="tabs">
+    <div class="tab" style="--c:#2f5fd0"><div class="ic">📘</div><div class="bd"><div class="nm">단어 · 400개</div><div class="ds">발음기호, 품사, 뜻, 예문과 해석, 그리고 시험에 어떻게 나오는지 짚어주는 포인트까지 들어 있습니다.</div></div></div>
+    <div class="tab" style="--c:#0f7a72"><div class="ic">🔗</div><div class="bd"><div class="nm">표현 · 300개</div><div class="ds">원어민이 실제로 쓰는 숙어와 구동사입니다. <em>get along with</em>, <em>lose track of time</em>처럼 단어만 알아서는 안 되는 것들입니다.</div></div></div>
+    <div class="tab" style="--c:#b8792a"><div class="ic">💬</div><div class="bd"><div class="nm">문장 · 300개</div><div class="ds">시험 답변에 <strong>그대로 갖다 쓰는 문장</strong>입니다. 각 문장에 &lsquo;도입 / 이유설명 / 마무리&rsquo; 같은 용도 표시가 붙어 있습니다.</div></div></div>
+    <div class="tab" style="--c:#e8a317"><div class="ic">★</div><div class="bd"><div class="nm">즐겨찾기</div><div class="ds">카드의 별을 누르면 여기 모입니다. 퀴즈를 틀린 항목은 <strong>자동으로</strong> 담깁니다.</div></div></div>
+    <div class="tab" style="--c:#2f9461"><div class="ic">🧠</div><div class="bd"><div class="nm">복습 (가장 중요)</div><div class="ds">안키식 간격 반복. 오늘 봐야 할 카드 수가 탭에 숫자로 뜹니다. 다음 장에서 자세히 설명합니다.</div></div></div>
+  </div>
+
+  <h3>④ 맨 아래 — 네 개의 버튼</h3>
+  <table class="tbl-tight">
+    <tr><td class="k">맨 위</td><td>긴 목록에서 한 번에 위로 올라갑니다.</td></tr>
+    <tr><td class="k">플래시</td><td>지금 주제를 플래시카드로 넘겨봅니다. <strong>좌우로 밀면</strong> 다음 카드, <strong>탭하면</strong> 뒤집힙니다.</td></tr>
+    <tr><td class="k">퀴즈</td><td>지금 주제에서 12문항 사지선다. 영↔한 양방향으로 나옵니다.</td></tr>
+    <tr><td class="k">다음 주제</td><td>주제를 순서대로 넘깁니다.</td></tr>
+  </table>
+  <div class="foot"><span>매일 영어 · OPIc IH 실전 표현 1000</span><span>2</span></div>
+</section>
+
+<!-- ============ 3. 안키식 복습 ============ -->
+<section class="page">
+  <div class="sec-num">STEP 03</div>
+  <h2>🧠 복습 &mdash; 이 앱의 핵심</h2>
+  <p class="lead">1000개를 처음부터 끝까지 읽는 건 며칠이면 됩니다. 문제는 <strong>일주일 뒤에 기억나느냐</strong>입니다. 복습 탭은 이 문제 하나를 풀기 위해 있습니다.</p>
+
+  <h3>어떻게 작동하나요</h3>
+  <p>카드를 보고 답을 확인한 뒤, 네 개 버튼 중 <strong>솔직하게</strong> 하나를 고르면 됩니다. 그러면 그 카드가 다음에 언제 나올지 자동으로 정해집니다.</p>
+
+  <div class="grades">
+    <div class="gr g1"><b>다시</b><span>전혀 몰랐다<br>몇 분 뒤 또 나옴</span></div>
+    <div class="gr"><b>어려움</b><span>겨우 떠올렸다<br>간격이 조금만 늘어남</span></div>
+    <div class="gr"><b>보통</b><span>정상적으로 기억<br>간격이 2.5배로</span></div>
+    <div class="gr g4"><b>쉬움</b><span>너무 쉬웠다<br>간격이 크게 점프</span></div>
+  </div>
+
+  <p>버튼마다 <strong>다음에 언제 나올지가 미리 적혀 있습니다.</strong> 고민 없이 느낌대로 누르세요.</p>
+
+  <table>
+    <tr><th>같은 카드를 &lsquo;보통&rsquo;으로 계속 맞히면</th><th>다시 나오는 시점</th></tr>
+    <tr><td>처음 봤을 때</td><td>10분 뒤</td></tr>
+    <tr><td>두 번째</td><td>다음 날</td></tr>
+    <tr><td>세 번째</td><td>3일 뒤</td></tr>
+    <tr><td>네 번째</td><td>8일 뒤</td></tr>
+    <tr><td>다섯 번째</td><td>20일 뒤</td></tr>
+    <tr><td>여섯 번째</td><td>약 1.7개월 뒤</td></tr>
+    <tr><td>일곱 번째</td><td>약 4개월 뒤</td></tr>
+  </table>
+
+  <p style="font-size:9pt;color:var(--ink3);margin-top:-4px">한 번 틀리면 간격이 절반으로 줄고 다시 자주 나옵니다. 예를 들어 8일 간격 카드에서 <strong>다시</strong>를 누르면 10분 뒤에 다시 나오고, 그 카드의 다음 간격은 4일로 내려갑니다.</p>
+
+  <p>이미 외운 카드에 시간을 쓰지 않고, <strong>잊어버리기 직전에만</strong> 다시 만나게 하는 구조입니다. 그래서 하루 10분으로도 1000개가 쌓입니다. 중간에 틀리면 간격이 줄어들면서 다시 자주 나오니, 놓치는 것도 없습니다.</p>
+
+  <div class="note"><b>솔직하게 누르는 게 이득입니다.</b> 헷갈렸는데 &lsquo;쉬움&rsquo;을 누르면 두 달 뒤에나 다시 나와서 결국 까먹습니다. 반대로 다 아는데 &lsquo;다시&rsquo;를 누르면 아는 카드를 계속 보느라 시간이 낭비됩니다.</div>
+
+  <h3>복습 탭 화면에 있는 것들</h3>
+  <table class="tbl-tight">
+    <tr><td class="k">위쪽 숫자 3개</td><td><strong>신규</strong>(오늘 처음 보는 카드) / <strong>학습 중</strong>(방금 틀려서 곧 다시 나올 카드) / <strong>복습</strong>(예전에 본 것 중 오늘이 만기인 카드)</td></tr>
+    <tr><td class="k">복습 범위</td><td><strong>전체 1000</strong> / <strong>이 주제</strong>만 / <strong>★ 즐겨찾기</strong>만 중에서 고릅니다.</td></tr>
+    <tr><td class="k">카드 상태</td><td>1000개가 미학습·학습 중·복습·숙달로 얼마나 나뉘어 있는지 보여줍니다. <strong>숙달</strong>은 간격이 3주를 넘긴 카드입니다.</td></tr>
+    <tr><td class="k">7일 예정</td><td>앞으로 일주일간 며칠에 몇 장이 나올지 미리 보여줍니다.</td></tr>
+    <tr><td class="k">연속 학습</td><td>며칠째 이어서 하고 있는지. <strong>하루 경계는 새벽 4시</strong>라 밤 2시에 해도 그날로 칩니다.</td></tr>
+  </table>
+  <div class="foot"><span>매일 영어 · OPIc IH 실전 표현 1000</span><span>3</span></div>
+</section>
+
+<!-- ============ 4. 루틴 ============ -->
+<section class="page">
+  <div class="sec-num">STEP 04</div>
+  <h2>이렇게 쓰면 됩니다</h2>
+  <p class="lead">상황에 맞는 것 하나만 골라 그대로 따라 하세요. 가장 중요한 건 <strong>매일 조금씩</strong>입니다. 주말에 몰아서 세 시간 하는 것보다 매일 10분이 훨씬 낫습니다.</p>
+
+  <div class="routine">
+    <div class="hd"><span>🚇 기본 &mdash; 시험이 아직 멀었다면</span><em>하루 10~15분</em></div>
+    <div class="bd"><ol>
+      <li>출근·등교길에 앱을 열고 <strong>🧠 복습</strong> 탭으로 들어갑니다.</li>
+      <li><strong>복습 시작</strong>을 눌러 오늘 나온 카드를 끝까지 넘깁니다. 보통 20~30장, 10분 안쪽입니다.</li>
+      <li>다 끝나면 그날은 그만해도 됩니다. 남은 신규 카드는 내일 나옵니다.</li>
+      <li>여유가 있으면 관심 가는 주제 하나를 골라 <strong>문장</strong> 탭을 소리 내어 읽어보세요.</li>
+    </ol></div>
+  </div>
+
+  <div class="routine">
+    <div class="hd"><span>🔥 집중 &mdash; 시험이 2~3주 남았다면</span><em>하루 30~40분</em></div>
+    <div class="bd"><ol>
+      <li>설정에서 <strong>하루 새 카드를 40장</strong>으로 올립니다. (줄 세 개 → 🧠 하루 새 카드)</li>
+      <li>아침에 <strong>🧠 복습</strong>을 먼저 끝냅니다. 이게 매일의 기본입니다.</li>
+      <li>저녁에 주제를 하나 정해 <strong>단어 → 표현 → 문장</strong> 순으로 훑고, 마지막에 <strong>퀴즈</strong>를 칩니다.</li>
+      <li>퀴즈에서 틀린 것은 자동으로 ★에 담깁니다. 시험 전날 <strong>★ 탭만</strong> 다시 보세요.</li>
+      <li>시험 3일 전부터는 신규 카드를 <strong>10장</strong>으로 낮추고 복습에만 집중합니다.</li>
+    </ol></div>
+  </div>
+
+  <div class="routine">
+    <div class="hd"><span>🗣 말하기 훈련 &mdash; 점수를 올리려면</span><em>주 2~3회, 20분</em></div>
+    <div class="bd"><ol>
+      <li>주제를 하나 고르고 <strong>문장</strong> 탭을 엽니다.</li>
+      <li>눈 모양 버튼을 <strong>두 번</strong> 눌러 <strong>영어 가리기</strong> 모드로 만듭니다.</li>
+      <li>한글만 보고 영어로 말해본 뒤, 카드를 탭해서 답을 확인합니다.</li>
+      <li>스피커 버튼으로 원어민 발음을 듣고 <strong>따라 말합니다.</strong> 눈으로만 보면 시험장에서 안 나옵니다.</li>
+      <li><strong>19번 과거 경험</strong>과 <strong>20번 의견·연결어</strong> 주제를 특히 반복하세요. 답변을 이어 붙이는 힘이 여기서 나옵니다.</li>
+    </ol></div>
+  </div>
+
+  <div class="tipbox">
+    <div class="h">알아두면 좋은 것들</div>
+    <ul>
+      <li><strong>가리기 모드에서 카드를 탭하면</strong> 그 카드만 잠깐 답이 보입니다. 다시 탭하면 가려집니다.</li>
+      <li><strong>스피커 버튼</strong>은 표제어와 예문을 이어서 읽어줍니다. 이어폰을 끼고 들으면 훨씬 잘 들어옵니다.</li>
+      <li><strong>체크(✓) 버튼</strong>은 &lsquo;이건 다 외웠다&rsquo; 표시입니다. 설정에서 <strong>완료 항목 숨기기</strong>를 켜면 목록에서 사라져 남은 것만 보입니다.</li>
+      <li><strong>글자가 작다면</strong> 설정에서 크기를 4단계로 키울 수 있습니다.</li>
+      <li><strong>밤에 볼 때</strong>는 다크 모드로 바꾸세요. 기본은 아이폰 설정을 따라갑니다.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>매일 영어 · OPIc IH 실전 표현 1000</span><span>4</span></div>
+</section>
+
+<!-- ============ 5. 주제 + FAQ ============ -->
+<section class="page">
+  <div class="sec-num">STEP 05</div>
+  <h2>20개 주제와 시험의 관계</h2>
+  <p class="lead">앞의 17개는 OPIc 사전 설문에서 고르게 되는 항목들이라 <strong>거의 반드시 나옵니다.</strong> 뒤의 3개는 문제 유형 자체를 다루는 주제로, IH와 IM을 가르는 부분입니다.</p>
+
+  <div class="topics">
+    <div class="tp"><b>01</b>자기소개 &amp; 성격</div><div class="tp"><b>11</b>카페 &amp; 커피</div>
+    <div class="tp"><b>02</b>직업 &amp; 회사생활</div><div class="tp"><b>12</b>쇼핑 &amp; 소비</div>
+    <div class="tp"><b>03</b>집 &amp; 우리 동네</div><div class="tp"><b>13</b>교통 &amp; 통근</div>
+    <div class="tp"><b>04</b>가족 &amp; 친구</div><div class="tp"><b>14</b>날씨 &amp; 계절</div>
+    <div class="tp"><b>05</b>취미 &amp; 여가</div><div class="tp"><b>15</b>기술 &amp; 스마트폰</div>
+    <div class="tp"><b>06</b>영화 &amp; 드라마</div><div class="tp"><b>16</b>학교 &amp; 공부</div>
+    <div class="tp"><b>07</b>음악 &amp; 공연</div><div class="tp"><b>17</b>은행·병원·공공기관</div>
+    <div class="tp"><b>08</b>운동 &amp; 건강</div><div class="tp"><b>18</b>롤플레이 &amp; 문제 해결</div>
+    <div class="tp"><b>09</b>여행 &amp; 휴가</div><div class="tp"><b>19</b>과거 경험 &amp; 스토리텔링</div>
+    <div class="tp"><b>10</b>음식 &amp; 식당</div><div class="tp"><b>20</b>의견·비교 &amp; 연결어</div>
+  </div>
+
+  <div class="note"><b>시간이 없다면 18·19·20번부터.</b> 롤플레이 대응, 경험을 이야기로 풀어내기, 문장과 문장을 잇는 연결어 &mdash; 이 셋이 IH 판정에서 실제로 점수를 가릅니다. 어휘를 아무리 많이 알아도 이게 안 되면 IM에 머무릅니다.</div>
+
+  <h2 style="margin-top:26px">자주 묻는 질문</h2>
+  <table>
+    <tr><th style="width:34%">질문</th><th>답</th></tr>
+    <tr><td class="k">기록이 어디 저장되나요?</td><td>이 아이폰 안에만 저장됩니다. 서버로 올라가지 않고, 앱을 닫았다 열어도 그대로입니다.</td></tr>
+    <tr><td class="k">폰을 바꾸면 기록이 옮겨지나요?</td><td>아니요, 새 기기에서는 처음부터 시작합니다. 기록을 옮기는 기능은 없습니다.</td></tr>
+    <tr><td class="k">아이패드·컴퓨터에서도 되나요?</td><td>열리긴 하지만 화면은 아이폰 기준으로 만들었습니다. <strong>기록은 기기마다 따로</strong> 쌓이니 한 기기에서만 쓰는 걸 권합니다.</td></tr>
+    <tr><td class="k">며칠 안 했더니 카드가 밀렸어요</td><td>밀린 만큼 한 번에 나옵니다. 부담되면 설정에서 <strong>하루 복습 상한</strong>을 50~100으로 낮춰 나눠서 소화하세요.</td></tr>
+    <tr><td class="k">처음부터 다시 하고 싶어요</td><td>설정 맨 아래 <strong>학습 기록 전체 초기화</strong>. 별표·완료·복습 진행이 모두 지워지며 되돌릴 수 없습니다.</td></tr>
+    <tr><td class="k">발음이 안 나와요</td><td>아이폰 무음 스위치와 볼륨을 확인하세요. 기기에 내장된 음성을 쓰기 때문에 인터넷은 필요 없습니다.</td></tr>
+    <tr><td class="k">내용이 업데이트되나요?</td><td>인터넷이 연결된 상태로 열면 바뀐 내용이 자동으로 반영됩니다. 학습 기록은 그대로 유지됩니다.</td></tr>
+  </table>
+
+  <div class="tipbox" style="margin-top:22px">
+    <div class="h">마지막으로</div>
+    <ul>
+      <li>1000개를 다 외우려 하지 마세요. <strong>복습 탭이 시키는 만큼만</strong> 매일 하면 됩니다.</li>
+      <li>하루 빠져도 괜찮습니다. 다음 날 이어서 하면 알아서 조정됩니다.</li>
+      <li>눈으로만 보지 말고 <strong>입으로 소리 내어</strong> 읽으세요. 말하기 시험입니다.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>매일 영어 · OPIc IH 실전 표현 1000</span><span>5</span></div>
+</section>
+
+</body>
+</html>

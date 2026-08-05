@@ -1,0 +1,20 @@
+{
+  "name": "매일 영어 · OPIc IH 실전 표현 1000",
+  "short_name": "매일 영어",
+  "description": "OPIc IH 수준 일상 영어 단어·숙어·문장 1000개. 안키식 간격 반복 복습 포함.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./opic_ih_daily_english.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#16233d",
+  "theme_color": "#16233d",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "./icons/icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

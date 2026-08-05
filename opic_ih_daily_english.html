@@ -6,6 +6,13 @@
 <meta name="theme-color" content="#fbfcfe" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#10151f" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="매일 영어">
+<meta name="description" content="OPIc IH 수준 일상 영어 단어·숙어·문장 1000개. 안키식 간격 반복 복습 포함.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 <title>매일 영어 · OPIc IH 실전 표현 1000</title>
 <style>
 /* ============================================================
@@ -2945,6 +2952,14 @@ sents:[
   applyMask(); applyFs(); applyTheme(); applySwitches(); applySrsCfg();
   renderTopics(); render();
   setTimeout(scrollChipIntoView, 100);
+
+  /* 오프라인 실행 — 홈 화면에 추가해 앱으로 쓸 때 비행기 모드에서도 열립니다.
+     서비스 워커가 없는 환경(파일 직접 열기 등)에서는 조용히 넘어갑니다. */
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function () {});
+    });
+  }
 })();
 </script>
 </body>

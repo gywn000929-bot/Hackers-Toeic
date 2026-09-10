@@ -10163,6 +10163,7 @@ function wrReveal() {                        // 채점 없이 모범 예문만 �
 // ====================================================
 // 테마 — 홈·매일 영어와 같은 칸에 저장해 세 화면이 함께 바뀝니다.
 // ====================================================
+const APP_VERSION = 'v11';
 const THEME_KEY = 'english-room-theme';
 
 function readTheme() {
@@ -10228,6 +10229,7 @@ function updateDiag() {
     ['고른 음성', ttsVoice ? ttsVoice.name + (ttsVoice.localService ? '' : ' <b>(온라인)</b>') : '<b>없음</b>'],
     ['실행 방식', standalone ? '설치한 앱' : '브라우저 탭'],
     ['기기', IS_IOS ? '아이폰·아이패드 (무음 스위치 영향 받음)' : '그 외'],
+    ['앱 버전', APP_VERSION],
     ['오디오 세션', audioCtx ? audioCtx.state : '아직 안 열림'],
     ['마지막 재생', ttsLast]
   ].map(r => `${r[0]} — ${r[1]}`).join('<br>');
@@ -10465,6 +10467,12 @@ if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('./sw.js').catch(function() {});
   });
+  /* 앱을 열 때마다, 그리고 다시 앞으로 나올 때마다 새 버전이 있는지 확인합니다 */
+  const checkUpdate = () => {
+    navigator.serviceWorker.getRegistration().then(r => { if (r) r.update(); }).catch(() => {});
+  };
+  window.addEventListener('load', checkUpdate);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdate(); });
   /* 설치한 앱이 옛 파일을 붙들고 있지 않도록, 새 버전이 자리를 잡으면 한 번 새로고침 */
   const hadController = !!navigator.serviceWorker.controller;
   let swReloaded = false;

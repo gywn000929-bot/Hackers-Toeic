@@ -367,6 +367,69 @@
   .ei-kr { color: #4a3a42; flex: 1; }
   @media (max-width: 640px) { .ei-en { min-width: 110px; } }
 
+  /* ── ✍️ 영작 ── */
+  .wr-wrap { max-width: 680px; margin: 0 auto; padding-top: 10px; }
+  .wr-h1 { font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .wr-sub { font-size: 0.88rem; color: var(--gray-text); line-height: 1.6; margin-bottom: 18px; }
+  .wr-setup {
+    background: var(--white); border: 1px solid var(--gray-mid); border-radius: 14px;
+    padding: 16px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .wr-setup label { font-size: 0.82rem; font-weight: 700; color: var(--navy); }
+  .wr-setup select {
+    flex: 1 1 220px; padding: 9px 12px; border: 1px solid var(--gray-mid); border-radius: 10px;
+    background: var(--gray-light); color: var(--navy); font-family: inherit; font-size: 0.85rem;
+  }
+  .wr-stat { font-size: 0.78rem; color: var(--gray-text); padding-left: 4px; }
+  .wr-card { background: var(--white); border: 1px solid var(--gray-mid); border-radius: 16px; padding: 22px 24px; }
+  .wr-center { text-align: center; }
+  .wr-big { font-size: 3rem; font-weight: 800; line-height: 1; }
+  .wr-tag { font-size: 0.72rem; font-weight: 700; color: var(--gray-text); letter-spacing: 0.4px; }
+  .wr-ko { font-size: 1.12rem; font-weight: 700; color: var(--navy); line-height: 1.55; margin-top: 8px; }
+  .wr-hintrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 14px; }
+  .wr-chip {
+    border: 1px solid var(--gray-mid); background: var(--gray-light); color: var(--navy-light);
+    border-radius: 8px; padding: 5px 10px; font-size: 0.74rem; font-weight: 700;
+    font-family: inherit; cursor: default;
+  }
+  button.wr-chip { cursor: pointer; }
+  .wr-chip.on { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .wr-ta {
+    width: 100%; margin-top: 14px; min-height: 92px; resize: vertical;
+    border: 1px solid var(--gray-mid); border-radius: 12px; padding: 13px;
+    background: var(--gray-light); color: var(--navy);
+    font-family: 'Noto Serif', Georgia, serif; font-size: 1rem; line-height: 1.6;
+  }
+  .wr-ta:focus { outline: none; border-color: var(--accent); background: var(--white); }
+  .wr-btns { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .wr-go, .wr-ghost {
+    flex: 1 1 140px; border-radius: 11px; padding: 12px 16px;
+    font-family: inherit; font-size: 0.86rem; font-weight: 700; cursor: pointer;
+  }
+  .wr-go { background: var(--accent); border: 1px solid var(--accent); color: #fff; }
+  .wr-ghost { background: var(--white); border: 1px solid var(--gray-mid); color: var(--navy-light); }
+  .wr-go:hover { filter: brightness(1.06); }
+  .wr-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .wr-res { margin-top: 18px; border-top: 1px solid var(--gray-mid); padding-top: 16px; }
+  .wr-score { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+  .wr-score b { font-size: 1.9rem; line-height: 1; }
+  .wr-score span { font-size: 0.85rem; font-weight: 700; color: var(--navy-light); }
+  .wr-line { margin-top: 14px; }
+  .wr-lab { display: block; font-size: 0.7rem; font-weight: 700; color: var(--gray-text); margin-bottom: 3px; }
+  .wr-txt { font-family: 'Noto Serif', Georgia, serif; font-size: 1rem; line-height: 1.75; color: var(--navy); }
+  .wr-ok { color: var(--green-dot); font-weight: 600; }
+  .wr-near { color: var(--star); font-weight: 600; border-bottom: 1px dashed var(--star); }
+  .wr-extra { color: var(--red); text-decoration: line-through; opacity: 0.85; }
+  .wr-miss { color: var(--red); font-weight: 700; }
+  .wr-tip {
+    margin-top: 14px; background: var(--yellow); border: 1px solid var(--yellow-border);
+    border-radius: 10px; padding: 12px 14px; font-size: 0.8rem; line-height: 1.65; color: var(--navy-light);
+  }
+  @media (max-width: 720px) {
+    .wr-card { padding: 18px 16px; }
+    .wr-h1 { font-size: 1.25rem; }
+  }
+
   /* ── 휴대폰 · 좁은 창 ──
      사이드바를 가로 스크롤 칩으로 눕히고 헤더를 두 줄로 접습니다. */
   @media (max-width: 720px) {
@@ -641,6 +704,7 @@
     <input type="text" class="search-box" placeholder="🔍 단어 검색..." id="searchInput" oninput="handleSearch(this.value)">
     <button class="mode-btn active" onclick="setMode('study')" id="btnStudy">📚 학습</button>
     <button class="mode-btn" onclick="setMode('quiz')" id="btnQuiz">🎯 퀴즈</button>
+    <button class="mode-btn" onclick="setMode('write')" id="btnWrite">✍️ 영작</button>
     <button class="mode-btn" onclick="doInstall()" id="btnInstall" hidden>⬇️ 설치</button>
   </div>
 </div>
@@ -9084,6 +9148,7 @@ function toggleExpand(key) {
 
 function toggleCheck(key) {
   checked[key] = !checked[key];
+  if (checked[key]) wrLearned(key);
   saveChecked();
   const [dayNum] = key.split('_');
   showDay(parseInt(dayNum));
@@ -9148,7 +9213,9 @@ function setMode(m) {
   mode = m;
   document.getElementById('btnStudy').className = 'mode-btn' + (m==='study'?' active':'');
   document.getElementById('btnQuiz').className = 'mode-btn' + (m==='quiz'?' active':'');
+  document.getElementById('btnWrite').className = 'mode-btn' + (m==='write'?' active':'');
   if(m==='study') { showDay(currentDay); document.getElementById('sidebar').style.display=''; }
+  else if(m==='write') { showWrite(); }
   else { document.getElementById('sidebar').style.display='none'; showQuizSetup(); }
 }
 
@@ -9415,7 +9482,7 @@ function scoreCorrect(day, w) {
   const typeBonus = quizType==='spell' ? 50 : 0; // 철자는 난도 보너스
   const gained=100+timeBonus+comboBonus+typeBonus;
   gScore+=gained; gCorrect++;
-  checked[`${day}_${w.n}`]=true; saveChecked();
+  checked[`${day}_${w.n}`]=true; wrLearned(`${day}_${w.n}`); saveChecked();
   const fb=document.getElementById('quizFeedback');
   const msg=['정답!','좋아요!','훌륭해요!','완벽해요!'][Math.min(3,Math.floor(gCombo/3))];
   if(fb) fb.innerHTML=`<div class="fb-text good">✓ ${msg} +${gained}점</div>
@@ -9477,6 +9544,294 @@ function showResult() {
   </div>`;
 }
 
+
+// ====================================================
+// ✍️ 영작 — 그날 배운 단어의 예문을 한글만 보고 영어로 옮겨 봅니다.
+// 인터넷 없이 돌아가야 하므로 채점은 책 안의 모범 예문과 단어 단위로
+// 맞춰 보는 방식입니다. 어형(-s, -ed, -ing)이 다른 건 '거의 맞음'으로
+// 봐 주고, 빠진 단어와 군더더기를 표시해 줍니다.
+// ====================================================
+let wrState = { q: [], i: 0, done: false, hint: false, text: '', setN: 0, setSum: 0, scope: null, last: null };
+const WR_SET = 10;
+let wrToday = loadWrToday();
+let wrStat = loadWrStat();
+
+function wrDayStamp() {
+  const d = new Date();
+  if (d.getHours() < 4) d.setDate(d.getDate() - 1);   // 새벽 4시를 하루 경계로
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+function loadWrToday() {
+  try {
+    const o = JSON.parse(localStorage.getItem('hv_today') || 'null');
+    if (o && o.d === wrDayStamp()) return o;
+  } catch (e) {}
+  return { d: wrDayStamp(), keys: [] };
+}
+function loadWrStat() {
+  try {
+    const o = JSON.parse(localStorage.getItem('hv_write') || 'null');
+    if (o && o.d === wrDayStamp()) return o;
+  } catch (e) {}
+  return { d: wrDayStamp(), n: 0, sum: 0 };
+}
+function wrLearned(key) {                    // 오늘 체크·정답 처리한 단어를 모아 둡니다
+  if (wrToday.d !== wrDayStamp()) wrToday = { d: wrDayStamp(), keys: [] };
+  if (wrToday.keys.indexOf(key) < 0) {
+    wrToday.keys.push(key);
+    if (wrToday.keys.length > 400) wrToday.keys.shift();
+    try { localStorage.setItem('hv_today', JSON.stringify(wrToday)); } catch (e) {}
+  }
+}
+function wrSaveStat() {
+  try { localStorage.setItem('hv_write', JSON.stringify(wrStat)); } catch (e) {}
+}
+
+/* ---------- 채점 엔진 ---------- */
+function wrTokens(s) {
+  let t = String(s || '').replace(/<[^>]+>/g, '').toLowerCase();
+  if (t.normalize) t = t.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  t = t.replace(/[‘’ʼ]/g, "'").replace(/[^a-z0-9'\s-]/g, ' ');
+  return t.split(/[\s-]+/).filter(Boolean);
+}
+function wrStem(w) {
+  w = w.replace(/'s$/, '').replace(/^'|'$/g, '');
+  if (w.length > 4 && /ies$/.test(w)) return w.slice(0, -3) + 'y';
+  if (w.length > 4 && /(ches|shes|sses|xes)$/.test(w)) return w.slice(0, -2);
+  if (w.length > 3 && /s$/.test(w) && !/ss$/.test(w)) return w.slice(0, -1);
+  if (w.length > 4 && /ing$/.test(w)) return w.slice(0, -3);
+  if (w.length > 4 && /ed$/.test(w)) return w.slice(0, -2);
+  return w;
+}
+function wrSame(a, b) { return a === b || wrStem(a) === wrStem(b); }
+
+function wrAlign(mine, ref) {                // 최장 공통 부분수열로 두 문장을 맞춰 봅니다
+  const n = mine.length, m = ref.length;
+  const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = m - 1; j >= 0; j--) {
+      dp[i][j] = wrSame(mine[i], ref[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+  const ops = []; let i = 0, j = 0;
+  while (i < n && j < m) {
+    if (wrSame(mine[i], ref[j])) { ops.push({ t: 'ok', w: mine[i], exact: mine[i] === ref[j] }); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { ops.push({ t: 'extra', w: mine[i] }); i++; }
+    else { ops.push({ t: 'miss', w: ref[j] }); j++; }
+  }
+  while (i < n) ops.push({ t: 'extra', w: mine[i++] });
+  while (j < m) ops.push({ t: 'miss', w: ref[j++] });
+  return { ops, lcs: dp[0][0] };
+}
+
+function wrGrade(text, q) {
+  const mine = wrTokens(text), ref = wrTokens(q.en);
+  const a = wrAlign(mine, ref);
+  const score = (mine.length + ref.length) ? Math.round(200 * a.lcs / (mine.length + ref.length)) : 0;
+  let used = true;
+  if (q.target) {
+    used = false;
+    const tg = wrTokens(q.target);
+    for (const t of tg) { if (mine.some(w => wrSame(w, t))) { used = true; break; } }
+  }
+  return { score, ops: a.ops, used, empty: !mine.length };
+}
+function wrLevel(sc) {
+  if (sc >= 85) return { t: '모범 예문과 거의 같아요', c: 'var(--green-dot)' };
+  if (sc >= 65) return { t: '충분히 통하는 문장이에요', c: 'var(--green-dot)' };
+  if (sc >= 40) return { t: '뜻은 전해져요 — 표현을 다듬어 볼까요', c: 'var(--star)' };
+  return { t: '모범 예문과 많이 달라요', c: 'var(--red)' };
+}
+
+/* ---------- 문제 뽑기 ---------- */
+function wrMake(day, w) {
+  if (!w.ex || !w.exkr) return null;
+  return {
+    ko: w.exkr,
+    en: String(w.ex).replace(/<[^>]+>/g, ''),
+    target: w.en,
+    tip: w.tip || '',
+    day: day,
+    n: w.n
+  };
+}
+function wrPool() {
+  const out = [];
+  if (wrState.scope === 'today') {
+    if (wrToday.d !== wrDayStamp()) wrToday = { d: wrDayStamp(), keys: [] };
+    wrToday.keys.forEach(key => {
+      const [dn, wn] = key.split('_').map(Number);
+      const day = DAYS.find(d => d.num === dn);
+      const w = day && day.words.find(x => x.n === wn);
+      const q = w && wrMake(dn, w);
+      if (q) out.push(q);
+    });
+  } else if (wrState.scope === 'all') {
+    DAYS.forEach(d => d.words.forEach(w => { const q = wrMake(d.num, w); if (q) out.push(q); }));
+  } else {
+    const day = DAYS.find(d => d.num === Number(wrState.scope));
+    if (day) day.words.forEach(w => { const q = wrMake(day.num, w); if (q) out.push(q); });
+  }
+  return out;
+}
+function wrShuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+/* ---------- 화면 ---------- */
+function showWrite() {
+  document.getElementById('sidebar').style.display = 'none';
+  if (wrState.scope === null) wrState.scope = String(currentDay);
+  wrState.q = []; wrState.i = 0; wrState.done = false; wrState.last = null;
+  wrState.text = ''; wrState.hint = false; wrState.setN = 0; wrState.setSum = 0;
+  renderWriteSetup();
+}
+
+function renderWriteSetup() {
+  if (wrStat.d !== wrDayStamp()) wrStat = { d: wrDayStamp(), n: 0, sum: 0 };
+  const todayN = (wrToday.d === wrDayStamp() ? wrToday.keys.length : 0);
+  let opts = `<option value="today"${wrState.scope === 'today' ? ' selected' : ''}>오늘 체크한 단어 (${todayN}개)</option>`;
+  DAYS.forEach(d => {
+    opts += `<option value="${d.num}"${String(wrState.scope) === String(d.num) ? ' selected' : ''}>` +
+            `DAY ${String(d.num).padStart(2, '0')} - ${d.story}</option>`;
+  });
+  opts += `<option value="all"${wrState.scope === 'all' ? ' selected' : ''}>전체 (30 Days)</option>`;
+
+  document.getElementById('mainContent').innerHTML = `
+  <div class="wr-wrap">
+    <div class="wr-h1">✍️ 영작 연습</div>
+    <div class="wr-sub">한글 해석만 보고 예문을 영어로 써 보세요. 책 속 모범 예문과 단어 단위로 맞춰
+      점수를 매기고, 빠진 단어와 군더더기를 표시해 드립니다.</div>
+    <div class="wr-setup">
+      <label>출제 범위</label>
+      <select id="wrScope" onchange="wrPickScope(this.value)">${opts}</select>
+      <button class="wr-go" onclick="wrStart()">▶ 시작 (${WR_SET}문장)</button>
+    </div>
+    <div class="wr-stat">오늘 ${wrStat.n}문장 · ${wrStat.n ? '평균 ' + Math.round(wrStat.sum / wrStat.n) + '점' : '아직 시작 전'}</div>
+  </div>`;
+}
+
+function wrPickScope(v) { wrState.scope = v; }
+
+function wrStart() {
+  const sel = document.getElementById('wrScope');
+  if (sel) wrState.scope = sel.value;
+  const pool = wrPool();
+  if (!pool.length) {
+    alert(wrState.scope === 'today'
+      ? '오늘 체크한 단어가 아직 없어요.\n학습 모드에서 단어를 ○ 로 체크하거나 퀴즈를 풀면 여기로 모입니다.'
+      : '이 범위에는 예문이 있는 단어가 없어요.');
+    return;
+  }
+  wrState.q = wrShuffle(pool).slice(0, WR_SET);
+  wrState.i = 0; wrState.done = false; wrState.last = null; wrState.text = ''; wrState.hint = false;
+  wrState.setN = 0; wrState.setSum = 0;
+  renderWrite();
+}
+
+function renderWrite() {
+  const mc = document.getElementById('mainContent');
+
+  if (wrState.i >= wrState.q.length) {                       // 세트 요약
+    const avg = wrState.setN ? Math.round(wrState.setSum / wrState.setN) : 0;
+    mc.innerHTML = `
+    <div class="wr-wrap">
+      <div class="wr-card wr-center">
+        <div class="wr-big" style="color:${wrLevel(avg).c}">${avg}</div>
+        <div class="wr-sub" style="margin:4px 0 18px">${wrState.setN}문장 평균 점수</div>
+        <button class="wr-go" onclick="wrStart()">🔄 한 세트 더</button>
+        <button class="wr-ghost" onclick="renderWriteSetup()">범위 바꾸기</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const q = wrState.q[wrState.i];
+  const r = wrState.last;
+  let h = `
+  <div class="wr-wrap">
+    <div class="wr-card">
+      <div class="wr-tag">${wrState.i + 1} / ${wrState.q.length} · DAY ${String(q.day).padStart(2, '0')}</div>
+      <div class="wr-ko">${q.ko}</div>
+      <div class="wr-hintrow">
+        <span class="wr-chip">단어 ${wrTokens(q.en).length}개</span>
+        ${wrState.hint
+          ? `<span class="wr-chip on">${q.target}</span>`
+          : `<button class="wr-chip" onclick="wrHint()">💡 단어 힌트</button>`}
+      </div>
+      <textarea class="wr-ta" id="wrTa" placeholder="영어로 써 보세요" spellcheck="false"
+        ${wrState.done ? 'readonly' : ''}>${wrState.text || ''}</textarea>
+      <div class="wr-btns">`;
+
+  h += wrState.done
+    ? `<button class="wr-ghost" onclick="wrRetry()">다시 쓰기</button>
+       <button class="wr-go" onclick="wrNext()">${wrState.i + 1 >= wrState.q.length ? '결과 보기' : '다음 문장 →'}</button>`
+    : `<button class="wr-ghost" onclick="wrReveal()">모범 예문 보기</button>
+       <button class="wr-go" onclick="wrCheck()">채점</button>`;
+  h += `</div>`;
+
+  if (wrState.done && r) {
+    const lv = wrLevel(r.score);
+    h += `<div class="wr-res">
+      <div class="wr-score"><b style="color:${lv.c}">${r.score}</b><span>점 · ${lv.t}</span>
+        <span class="wr-chip"${r.used ? '' : ' style="border-color:var(--red);color:var(--red)"'}>핵심 단어 ${r.used ? '✓' : '✗'}</span>
+      </div>`;
+    if (!r.empty) {
+      const mine = r.ops.map(o =>
+        o.t === 'ok' ? `<span class="${o.exact ? 'wr-ok' : 'wr-near'}">${o.w}</span>`
+        : o.t === 'extra' ? `<span class="wr-extra">${o.w}</span>` : '').filter(Boolean).join(' ');
+      h += `<div class="wr-line"><span class="wr-lab">내가 쓴 문장</span><div class="wr-txt">${mine}</div></div>`;
+    }
+    h += `<div class="wr-line"><span class="wr-lab">모범 예문</span><div class="wr-txt">${q.en}</div></div>`;
+    const miss = r.ops.filter(o => o.t === 'miss').map(o => o.w);
+    if (miss.length) {
+      h += `<div class="wr-line"><span class="wr-lab">빠진 단어</span>
+            <div class="wr-txt"><span class="wr-miss">${miss.slice(0, 8).join(', ')}</span></div></div>`;
+    }
+    if (q.tip) h += `<div class="wr-tip">${String(q.tip).replace(/<[^>]+>/g, '')}</div>`;
+    h += `</div>`;
+  }
+
+  h += `</div></div>`;
+  mc.innerHTML = h;
+
+  const ta = document.getElementById('wrTa');
+  if (ta && !wrState.done) {
+    ta.focus();
+    ta.addEventListener('input', () => { wrState.text = ta.value; });
+    ta.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); wrCheck(); }
+    });
+  }
+}
+
+function wrHint() { wrState.hint = true; renderWrite(); }
+function wrRetry() { wrState.done = false; wrState.last = null; wrState.text = ''; renderWrite(); }
+function wrNext() { wrState.i++; wrState.done = false; wrState.last = null; wrState.text = ''; wrState.hint = false; renderWrite(); }
+
+function wrCheck() {
+  const ta = document.getElementById('wrTa');
+  if (!ta) return;
+  const txt = ta.value.trim();
+  if (!txt) { ta.focus(); return; }
+  wrState.text = txt;
+  wrState.last = wrGrade(txt, wrState.q[wrState.i]);
+  wrState.done = true;
+  if (wrStat.d !== wrDayStamp()) wrStat = { d: wrDayStamp(), n: 0, sum: 0 };
+  wrStat.n++; wrStat.sum += wrState.last.score;
+  wrSaveStat();
+  wrState.setN++; wrState.setSum += wrState.last.score;
+  renderWrite();
+}
+
+function wrReveal() {                        // 채점 없이 모범 예문만 확인
+  const ta = document.getElementById('wrTa');
+  wrState.text = ta ? ta.value : '';
+  wrState.last = wrGrade(wrState.text, wrState.q[wrState.i]);
+  wrState.done = true;
+  renderWrite();
+}
 
 // ====================================================
 // 앱으로 설치 / 오프라인 실행

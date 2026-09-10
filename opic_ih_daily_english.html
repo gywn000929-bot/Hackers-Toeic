@@ -159,6 +159,8 @@ button { background: none; border: none; cursor: pointer; }
   position: sticky; top: 0; z-index: 60;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
+  /* 아이폰 설치 앱은 상태 표시줄이 화면을 덮으므로 그만큼 비웁니다 */
+  padding-top: env(safe-area-inset-top, 0px);
 }
 .hd-top {
   display: flex; align-items: center; gap: 10px;

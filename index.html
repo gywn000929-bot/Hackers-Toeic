@@ -36,6 +36,7 @@ try{var t=localStorage.getItem('english-room-theme');if(t&&t!=='auto')document.d
   --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
           'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
   --serif: var(--sans);          /* 영어도 같은 글꼴로 통일 */
+  --safe-t: env(safe-area-inset-top, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
 }
 @media (prefers-color-scheme: dark) {
@@ -106,7 +107,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .num { font-variant-numeric: tabular-nums; }
 .en { font-family: var(--serif); }
 
-.wrap { max-width: 620px; margin: 0 auto; padding: 22px 18px calc(28px + var(--safe-b)); }
+.wrap {
+  max-width: 620px; margin: 0 auto;
+  /* 아이폰 설치 앱은 상태 표시줄이 화면을 덮으므로 그만큼 비웁니다 */
+  padding: calc(22px + var(--safe-t)) 18px calc(28px + var(--safe-b));
+}
 
 /* 머리말 */
 .hd { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }

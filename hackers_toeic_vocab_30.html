@@ -327,6 +327,25 @@
   }
   .check-btn.checked { background: var(--green-dot); border-color: var(--green-dot); color: white; }
 
+  /* 발음 듣기 */
+  .spk {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border: 2px solid var(--gray-mid); border-radius: 50%;
+    background: none; cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--navy-light); transition: all 0.2s;
+  }
+  .spk svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .spk:hover { border-color: var(--accent); color: var(--accent); }
+  .spk.play { background: var(--accent); border-color: var(--accent); color: var(--white); }
+  .spk.sm {
+    width: 22px; height: 22px; border-width: 1px; border-radius: 7px;
+    vertical-align: middle; margin-left: 4px;
+  }
+  .spk.sm svg { width: 13px; height: 13px; }
+  .spk.lg { width: 34px; height: 34px; display: flex; margin: 0 auto 16px; }
+  .spk.lg svg { width: 18px; height: 18px; }
+
   /* EXAMPLE */
   .example-wrap {
     margin-top: 12px;
@@ -796,7 +815,6 @@
     border-bottom: 3px solid var(--accent); color: var(--accent);
     font-weight: 800; text-align: center; padding: 0 6px;
   }
-  .cloze-hint { font-size: 0.9rem; color: var(--gray-text); margin-bottom: 18px; }
 
   /* 철자 맞추기 입력 */
   .spell-input {
@@ -9290,10 +9308,11 @@ function showDay(num) {
           <button class="check-btn${isDone?' checked':''}" onclick="event.stopPropagation();toggleCheck('${key}')" title="학습 완료 표시">
             ${isDone?'✓':'○'}
           </button>
+          ${spkBtn(w.en, '')}
         </div>
       </div>
       <div class="example-wrap">
-        ${w.ex ? `<div class="example-en">${w.ex}</div><div class="example-kr">${w.exkr}</div>` : ''}
+        ${w.ex ? `<div class="example-en">${w.ex}${spkBtn(w.ex, 'sm')}</div><div class="example-kr">${w.exkr}</div>` : ''}
         ${w.deriv ? `<div class="deriv-box"><span class="deriv-label">관련어</span>${w.deriv}</div>` : ''}
         ${w.tip ? `<div class="toeic-tip"><div class="toeic-tip-title">🤖 토익 이렇게 나온다</div>${w.tip}</div>` : ''}
       </div>
@@ -9407,6 +9426,7 @@ function setMode(m) {
 
 /* 퀴즈에서 빠져나갈 때 돌던 타이머와 예약된 다음 문제를 모두 멈춥니다. */
 function stopQuiz() {
+  if (window.speechSynthesis) speechSynthesis.cancel();
   clearInterval(gTimer); clearInterval(speedTimer); clearTimeout(gNextT);
   gTimer = speedTimer = gNextT = null; speedActive = false; gLocked = false;
 }
@@ -9546,6 +9566,7 @@ function showQuizCard() {
       <div class="quiz-prompt">이 단어의 뜻은?</div>
       <div class="quiz-word">${w.en}</div>
       <div class="quiz-pron">${w.pron||''}</div>
+      ${spkBtn(w.en, 'lg')}
       <div class="quiz-options">
         ${choices.map(c=>`<button class="quiz-option" onclick="answerMC(this,${esc(c)===esc(w.kr)})">${c}</button>`).join('')}
       </div>`;
@@ -9566,7 +9587,6 @@ function showQuizCard() {
       <div class="quiz-qnum">DAY ${String(day).padStart(2,'0')}</div>
       <div class="quiz-prompt">빈칸에 들어갈 단어는?</div>
       <div class="cloze-sentence">${sentence}</div>
-      <div class="cloze-hint">💡 ${w.kr}</div>
       <div class="quiz-options">
         ${choices.map(c=>`<button class="quiz-option en-opt" onclick="answerMC(this,${esc(c)===esc(w.en)})">${c}</button>`).join('')}
       </div>`;
@@ -9588,6 +9608,7 @@ function showQuizCard() {
       <div class="quiz-prompt">뜻 고르기</div>
       <div class="quiz-word">${w.en}</div>
       <div class="quiz-pron">${w.pron||''}</div>
+      ${spkBtn(w.en, 'lg')}
       <div class="quiz-options">
         ${choices.map(c=>`<button class="quiz-option" onclick="answerMC(this,${esc(c)===esc(w.kr)})">${c}</button>`).join('')}
       </div>`;
@@ -9973,7 +9994,7 @@ function renderWrite() {
         : o.t === 'extra' ? `<span class="wr-extra">${o.w}</span>` : '').filter(Boolean).join(' ');
       h += `<div class="wr-line"><span class="wr-lab">내가 쓴 문장</span><div class="wr-txt">${mine}</div></div>`;
     }
-    h += `<div class="wr-line"><span class="wr-lab">모범 예문</span><div class="wr-txt">${q.en}</div></div>`;
+    h += `<div class="wr-line"><span class="wr-lab">모범 예문</span><div class="wr-txt">${q.en}${spkBtn(q.en, 'sm')}</div></div>`;
     const miss = r.ops.filter(o => o.t === 'miss').map(o => o.w);
     if (miss.length) {
       h += `<div class="wr-line"><span class="wr-lab">빠진 단어</span>
@@ -10021,6 +10042,46 @@ function wrReveal() {                        // 채점 없이 모범 예문만 �
   wrState.last = wrGrade(wrState.text, wrState.q[wrState.i]);
   wrState.done = true;
   renderWrite();
+}
+
+// ====================================================
+// 발음 듣기 — 기기에 내장된 음성으로 읽어 줍니다.
+// 별도 오디오 파일이 없어 인터넷 없이도 동작합니다.
+// ====================================================
+let ttsVoice = null;
+
+function pickVoice() {
+  if (!window.speechSynthesis) return;
+  const vs = speechSynthesis.getVoices();
+  ttsVoice = vs.find(v => /en[-_]US/i.test(v.lang) && /Samantha|Google US|Aria|Jenny|Natural/i.test(v.name))
+          || vs.find(v => /^en/i.test(v.lang))
+          || null;
+}
+if (window.speechSynthesis) {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+
+/* 버튼 마크업 — 카드·예문·퀴즈에서 같은 모양으로 씁니다. */
+function spkBtn(text, size) {
+  const t = String(text || '').replace(/<[^>]+>/g, '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  if (!t) return '';
+  return `<button class="spk${size ? ' ' + size : ''}" data-say="${t}" title="발음 듣기"
+     aria-label="발음 듣기" onclick="event.stopPropagation();say(this)">
+     <svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/></svg>
+   </button>`;
+}
+
+function say(btn) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  document.querySelectorAll('.spk.play').forEach(b => b.classList.remove('play'));
+  const u = new SpeechSynthesisUtterance(btn.dataset.say);
+  u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1;
+  if (ttsVoice) u.voice = ttsVoice;
+  btn.classList.add('play');
+  u.onend = u.onerror = () => btn.classList.remove('play');
+  speechSynthesis.speak(u);
 }
 
 // ====================================================

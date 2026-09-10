@@ -2183,7 +2183,24 @@ sents:[
 
   /* 아이폰과 설치한 앱 창에서는 첫 재생이 조용히 씹히는 일이 있어,
      처음 화면을 누를 때 무음으로 한 번 깨워 둡니다. */
+  /* 아이폰은 오디오 세션이 잠긴 상태에서 speechSynthesis 가 소리 없이 끝나기도 합니다.
+     첫 조작 때 무음 오실레이터를 아주 짧게 울려 세션을 깨웁니다. */
+  var audioCtx = null;
+  function unlockAudio() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      if (!audioCtx) audioCtx = new AC();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      g.gain.value = 0;
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(0); o.stop(audioCtx.currentTime + 0.03);
+    } catch (e) {}
+  }
+
   function primeTTS() {
+    unlockAudio();
     if (ttsPrimed || !window.speechSynthesis) return;
     ttsPrimed = true;
     try {
@@ -2199,6 +2216,7 @@ sents:[
     if (!window.speechSynthesis) { toast('이 브라우저는 음성을 지원하지 않아요'); return; }
     clearTimeout(speakWatch);
     primeTTS();
+    if (IS_IOS) unlockAudio();          // 아이폰은 매번 세션을 깨워 둡니다
     /* 아이폰에서는 cancel() 직후 speak() 하면 소리가 나지 않는 일이 있어,
        실제로 말하고 있을 때만 멈춥니다. */
     if (speechSynthesis.speaking) speechSynthesis.cancel();

@@ -10228,6 +10228,7 @@ function updateDiag() {
     ['고른 음성', ttsVoice ? ttsVoice.name + (ttsVoice.localService ? '' : ' <b>(온라인)</b>') : '<b>없음</b>'],
     ['실행 방식', standalone ? '설치한 앱' : '브라우저 탭'],
     ['기기', IS_IOS ? '아이폰·아이패드 (무음 스위치 영향 받음)' : '그 외'],
+    ['오디오 세션', audioCtx ? audioCtx.state : '아직 안 열림'],
     ['마지막 재생', ttsLast]
   ].map(r => `${r[0]} — ${r[1]}`).join('<br>');
 }
@@ -10281,7 +10282,24 @@ const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
 /* 아이폰과 설치한 앱 창에서는 첫 재생이 조용히 씹히는 일이 있어,
    처음 화면을 누를 때 무음으로 한 번 깨우고 바로 비워 둡니다.
    (깨우기가 큐에 남아 있으면 다음 재생이 밀려 조용해집니다.) */
+/* 아이폰은 오디오 세션이 잠긴 상태에서 speechSynthesis 가 소리 없이 끝나기도 합니다.
+   첫 조작 때 무음 오실레이터를 아주 짧게 울려 세션을 깨웁니다. */
+let audioCtx = null;
+function unlockAudio() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    g.gain.value = 0;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(0); o.stop(audioCtx.currentTime + 0.03);
+  } catch (e) {}
+}
+
 function primeTTS() {
+  unlockAudio();
   if (ttsPrimed || !window.speechSynthesis) return;
   ttsPrimed = true;
   try {
@@ -10301,6 +10319,7 @@ function say(btn, retryPlain) {
   const synth = window.speechSynthesis;
   clearTimeout(sayWatch);
   primeTTS();
+  if (IS_IOS) unlockAudio();           // 아이폰은 매번 세션을 깨워 둡니다
   /* 아이폰에서는 cancel() 직후 speak() 하면 소리가 나지 않는 일이 있어,
      실제로 말하고 있을 때만 멈춥니다. */
   if (synth.speaking) synth.cancel();

@@ -284,7 +284,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   <p class="foot">
     학습 기록은 이 기기에만 저장됩니다.<br>
     한 번 열어두면 인터넷이 없어도 그대로 열립니다.<br>
-    <span class="ver">버전 <b id="appVer">v13</b></span>
+    <span class="ver">버전 <b id="appVer">v14</b></span>
   </p>
 </div>
 
@@ -386,6 +386,46 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   /* ---------- 소리 테스트 ----------
      아이폰은 오디오 세션이 잠겨 있으면 발음이 소리 없이 끝나기도 해서,
      무음 오실레이터로 세션을 깨운 뒤 실제로 읽혀 봅니다. */
+  /* WAV 를 즉석에서 만들어 <audio> 로 재생합니다.
+     아이폰에서 <audio> 는 '미디어 채널'이라 무음 스위치를 무시합니다.
+     (유튜브가 무음 모드에서도 들리는 것과 같은 경로입니다.) */
+  function wavBlob(seconds, freq, volume, rate) {
+    rate = rate || 22050;
+    var n = Math.floor(seconds * rate);
+    var buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf), i;
+    function str(o, s) { for (var k = 0; k < s.length; k++) v.setUint8(o + k, s.charCodeAt(k)); }
+    str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVEfmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+    v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    str(36, 'data'); v.setUint32(40, n * 2, true);
+    for (i = 0; i < n; i++) {
+      var s = freq ? Math.sin(2 * Math.PI * freq * i / rate) * volume : 0;
+      /* 앞뒤를 부드럽게 — 뚝 끊기는 소리 방지 */
+      if (freq) {
+        var fade = Math.min(1, Math.min(i, n - i) / (rate * 0.02));
+        s *= fade;
+      }
+      v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, s)) * 32767, true);
+    }
+    return new Blob([buf], { type: 'audio/wav' });
+  }
+
+  /* 무음 오디오를 반복 재생해 두면 아이폰이 '미디어 재생 중'으로 보고,
+     이어지는 발음도 무음 스위치를 덜 타게 됩니다. */
+  var silentLoop = null;
+  function mediaUnlock() {
+    try {
+      if (!silentLoop) {
+        silentLoop = new Audio(URL.createObjectURL(wavBlob(1, 0, 0, 8000)));
+        silentLoop.loop = true;
+        silentLoop.volume = 0.01;
+        silentLoop.setAttribute('playsinline', '');
+      }
+      if (silentLoop.paused) { var p = silentLoop.play(); if (p && p.catch) p.catch(function () {}); }
+    } catch (e) {}
+  }
+
   var audioCtx = null;
 
   /* 짧은 '삐' 소리를 냅니다. 이게 들리는지 여부로
@@ -422,7 +462,17 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
                      window.navigator.standalone === true;
     var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    var session = beep(0.12);            // 들리는 '삐' — 무음 모드 가려내기용
+    mediaUnlock();                       // 미디어 채널 열어 두기
+    var session = beep(0.12);            // WebAudio 삐 — 벨소리 채널
+    var mediaBeep = '재생 안 됨';
+    try {
+      var tone = new Audio(URL.createObjectURL(wavBlob(0.35, 880, 0.3)));
+      tone.setAttribute('playsinline', '');
+      var tp = tone.play();
+      if (tp && tp.then) tp.then(function () { mediaBeep = '재생됨'; })
+                           .catch(function (err) { mediaBeep = '막힘(' + err.name + ')'; });
+      else mediaBeep = '재생됨';
+    } catch (e) { mediaBeep = '실패(' + e.message + ')'; }
 
     if (!window.speechSynthesis) {
       report([['실행 방식', standalone ? '설치한 앱' : '브라우저'],
@@ -450,10 +500,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
         ['판단', !vs.length ? '기기에 영어 음성이 없습니다'
           : events.indexOf('시작') >= 0
             ? (isIOS
-              ? '재생은 정상입니다. 아이폰은 발음이 <b>벨소리 채널</b>을 타서 <b>무음 모드면 소리가 나지 않습니다</b> — 방금 «삐» 소리도 안 들렸다면 측면 무음 스위치를 해제하고 볼륨을 올려 주세요'
+              ? '아이폰이 «읽었다»고 보고했습니다. 아래 «삐» 두 소리 중 무엇이 들렸는지로 원인이 갈립니다'
               : '재생은 됐습니다 — 안 들리면 볼륨·출력 장치를 확인해 주세요')
             : '소리 없이 끝났습니다 — 아래 결과를 복사해 알려주세요'],
-        ['«삐» 소리', '테스트할 때 짧게 울렸습니다. 이것도 안 들렸다면 기기가 무음이거나 볼륨이 0입니다']
+        ['«삐» 두 번', '① 미디어 채널(유튜브와 같은 길) — ' + mediaBeep + ' · ② 벨소리 채널(발음과 같은 길)'],
+        ['어떻게 읽나요', '① <b>둘 다 들림</b> → 이제 발음도 들릴 겁니다 · ② <b>①만 들림</b> → 발음이 타는 채널이 막힌 것(무음 스위치 또는 사파리 제약) · ③ <b>둘 다 안 들림</b> → 기기 볼륨·출력 장치 문제']
       ]);
     }, 2600);
     $('#soundOut').innerHTML = '테스트 중… 잠시만요';

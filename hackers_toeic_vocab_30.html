@@ -10164,7 +10164,7 @@ function wrReveal() {                        // 채점 없이 모범 예문만 �
 // ====================================================
 // 테마 — 홈·매일 영어와 같은 칸에 저장해 세 화면이 함께 바뀝니다.
 // ====================================================
-const APP_VERSION = 'v13';
+const APP_VERSION = 'v14';
 const THEME_KEY = 'english-room-theme';
 
 function readTheme() {
@@ -10232,6 +10232,7 @@ function updateDiag() {
     ['기기', IS_IOS ? '아이폰·아이패드 (무음 스위치 영향 받음)' : '그 외'],
     ['앱 버전', APP_VERSION],
     ['오디오 세션', audioCtx ? audioCtx.state : '아직 안 열림'],
+    ['미디어 채널', silentLoop && !silentLoop.paused ? '열림' : '아직'],
     ['마지막 재생', ttsLast]
   ].map(r => `${r[0]} — ${r[1]}`).join('<br>');
 }
@@ -10285,6 +10286,46 @@ const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
 /* 아이폰과 설치한 앱 창에서는 첫 재생이 조용히 씹히는 일이 있어,
    처음 화면을 누를 때 무음으로 한 번 깨우고 바로 비워 둡니다.
    (깨우기가 큐에 남아 있으면 다음 재생이 밀려 조용해집니다.) */
+/* WAV 를 즉석에서 만들어 <audio> 로 재생합니다.
+   아이폰에서 <audio> 는 '미디어 채널'이라 무음 스위치를 무시합니다.
+   (유튜브가 무음 모드에서도 들리는 것과 같은 경로입니다.) */
+function wavBlob(seconds, freq, volume, rate) {
+  rate = rate || 22050;
+  let n = Math.floor(seconds * rate);
+  let buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf), i;
+  function str(o, s) { for (let k = 0; k < s.length; k++) v.setUint8(o + k, s.charCodeAt(k)); }
+  str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVEfmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+  v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  str(36, 'data'); v.setUint32(40, n * 2, true);
+  for (i = 0; i < n; i++) {
+    let s = freq ? Math.sin(2 * Math.PI * freq * i / rate) * volume : 0;
+    /* 앞뒤를 부드럽게 — 뚝 끊기는 소리 방지 */
+    if (freq) {
+      let fade = Math.min(1, Math.min(i, n - i) / (rate * 0.02));
+      s *= fade;
+    }
+    v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, s)) * 32767, true);
+  }
+  return new Blob([buf], { type: 'audio/wav' });
+}
+
+/* 무음 오디오를 반복 재생해 두면 아이폰이 '미디어 재생 중'으로 보고,
+   이어지는 발음도 무음 스위치를 덜 타게 됩니다. */
+let silentLoop = null;
+function mediaUnlock() {
+  try {
+    if (!silentLoop) {
+      silentLoop = new Audio(URL.createObjectURL(wavBlob(1, 0, 0, 8000)));
+      silentLoop.loop = true;
+      silentLoop.volume = 0.01;
+      silentLoop.setAttribute('playsinline', '');
+    }
+    if (silentLoop.paused) { let p = silentLoop.play(); if (p && p.catch) p.catch(function () {}); }
+  } catch (e) {}
+}
+
 /* 아이폰은 오디오 세션이 잠긴 상태에서 speechSynthesis 가 소리 없이 끝나기도 합니다.
    첫 조작 때 무음 오실레이터를 아주 짧게 울려 세션을 깨웁니다. */
 let audioCtx = null;
@@ -10302,6 +10343,7 @@ function unlockAudio() {
 }
 
 function primeTTS() {
+  mediaUnlock();          // 무음 오디오를 틀어 미디어 채널을 열어 둡니다
   unlockAudio();
   if (ttsPrimed || !window.speechSynthesis) return;
   ttsPrimed = true;
@@ -10322,7 +10364,7 @@ function say(btn, retryPlain) {
   const synth = window.speechSynthesis;
   clearTimeout(sayWatch);
   primeTTS();
-  if (IS_IOS) unlockAudio();           // 아이폰은 매번 세션을 깨워 둡니다
+  if (IS_IOS) { mediaUnlock(); unlockAudio(); }   // 아이폰은 매번 열어 둡니다
   /* 아이폰에서는 cancel() 직후 speak() 하면 소리가 나지 않는 일이 있어,
      실제로 말하고 있을 때만 멈춥니다. */
   if (synth.speaking) synth.cancel();

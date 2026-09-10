@@ -194,6 +194,22 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(125,125,125,.35);
 }
 .theme-row button.on { border-color: var(--word); color: var(--word); background: var(--word-bg); }
+.sound {
+  margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line);
+}
+.sound-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sound-top .lab { font-size: .72rem; font-weight: 800; color: var(--ink-3); margin-right: 2px; }
+.sound button {
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2);
+  border-radius: 9px; padding: 7px 12px; font-size: .75rem; font-weight: 700;
+}
+.sound button.pri { background: var(--word); border-color: var(--word); color: #fff; }
+.sound-out {
+  display: none; margin-top: 10px; background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 12px; font-size: .72rem; line-height: 1.75; color: var(--ink-2);
+}
+.sound-out.on { display: block; }
+.sound-out b { color: var(--ink); }
 .foot { margin-top: 18px; font-size: .72rem; color: var(--ink-3); line-height: 1.7; text-align: center; }
 </style>
 </head>
@@ -253,6 +269,15 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     <button data-t="gray"><i style="background:#eceff3"></i>그레이</button>
     <button data-t="dark"><i style="background:#10151f"></i>다크</button>
   </div>
+
+  <section class="sound">
+    <div class="sound-top">
+      <span class="lab">발음 소리</span>
+      <button class="pri" id="btnSound">🔊 소리 테스트</button>
+      <button id="btnCopy" hidden>결과 복사</button>
+    </div>
+    <div class="sound-out" id="soundOut"></div>
+  </section>
 
   <p class="foot">
     학습 기록은 이 기기에만 저장됩니다.<br>
@@ -353,6 +378,85 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     if (!b) return;
     try { localStorage.setItem(THEME_KEY, b.dataset.t); } catch (err) {}
     applyTheme(b.dataset.t);
+  });
+
+  /* ---------- 소리 테스트 ----------
+     아이폰은 오디오 세션이 잠겨 있으면 발음이 소리 없이 끝나기도 해서,
+     무음 오실레이터로 세션을 깨운 뒤 실제로 읽혀 봅니다. */
+  var audioCtx = null;
+  function unlockAudio() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return '지원 안 함';
+      if (!audioCtx) audioCtx = new AC();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      g.gain.value = 0;
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(0); o.stop(audioCtx.currentTime + 0.03);
+      return audioCtx.state;
+    } catch (e) { return '실패: ' + e.message; }
+  }
+
+  var lastReport = '';
+  function report(lines) {
+    lastReport = lines.map(function (r) { return r[0] + ' — ' + r[1]; }).join('\n');
+    $('#soundOut').innerHTML = lines.map(function (r) {
+      return r[0] + ' — <b>' + r[1] + '</b>';
+    }).join('<br>');
+    $('#soundOut').classList.add('on');
+    $('#btnCopy').hidden = false;
+  }
+
+  $('#btnSound').addEventListener('click', function () {
+    var standalone = window.matchMedia('(display-mode: standalone)').matches ||
+                     window.navigator.standalone === true;
+    var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    var session = unlockAudio();
+
+    if (!window.speechSynthesis) {
+      report([['실행 방식', standalone ? '설치한 앱' : '브라우저'],
+              ['기기', isIOS ? '아이폰·아이패드' : '그 외'],
+              ['음성 기능', '이 브라우저는 지원하지 않음']]);
+      return;
+    }
+    var vs = speechSynthesis.getVoices().filter(function (v) { return /^en/i.test(v.lang); });
+    var events = [];
+    var u = new SpeechSynthesisUtterance('This is a sound test.');
+    u.lang = 'en-US'; u.rate = 0.95; u.volume = 1;
+    u.onstart = function () { events.push('시작'); };
+    u.onend = function () { events.push('끝'); };
+    u.onerror = function (e) { events.push('오류(' + (e && e.error) + ')'); };
+    try { speechSynthesis.cancel(); } catch (e) {}
+    speechSynthesis.speak(u);
+
+    setTimeout(function () {
+      report([
+        ['실행 방식', standalone ? '설치한 앱' : '브라우저'],
+        ['기기', isIOS ? '아이폰·아이패드' : '그 외'],
+        ['영어 음성', vs.length + '개' + (vs.length ? ' (예: ' + vs[0].name + ')' : '')],
+        ['오디오 세션', String(session)],
+        ['재생 이벤트', events.length ? events.join(' → ') : '아무 일도 없었음'],
+        ['판단', !vs.length ? '기기에 영어 음성이 없습니다'
+          : events.indexOf('시작') >= 0 ? '재생은 됐습니다 — 안 들리면 무음 스위치·볼륨·출력 장치를 확인해 주세요'
+          : '소리 없이 끝났습니다 — 아래 결과를 복사해 알려주세요']
+      ]);
+    }, 2600);
+    $('#soundOut').innerHTML = '테스트 중… 잠시만요';
+    $('#soundOut').classList.add('on');
+  });
+
+  $('#btnCopy').addEventListener('click', function () {
+    var t = lastReport + '\n' + navigator.userAgent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { $('#btnCopy').textContent = '복사됨'; });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = t; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); $('#btnCopy').textContent = '복사됨'; } catch (e) {}
+      document.body.removeChild(ta);
+    }
   });
 
   /* ---------- 설치 ---------- */

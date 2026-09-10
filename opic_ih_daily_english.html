@@ -2176,6 +2176,8 @@ sents:[
   }
   var speakWatch = null;
   var ttsPrimed = false;
+  var IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   /* 아이폰과 설치한 앱 창에서는 첫 재생이 조용히 씹히는 일이 있어,
      처음 화면을 누를 때 무음으로 한 번 깨워 둡니다. */
@@ -2185,7 +2187,7 @@ sents:[
     try {
       var p = new SpeechSynthesisUtterance(' ');
       p.volume = 0; p.lang = 'en-US';
-      speechSynthesis.speak(p);
+      speechSynthesis.speak(p);   // 공백 한 칸이라 바로 끝납니다
     } catch (e) {}
   }
   document.addEventListener('pointerdown', primeTTS, { once: true, capture: true });
@@ -2195,12 +2197,18 @@ sents:[
     if (!window.speechSynthesis) { toast('이 브라우저는 음성을 지원하지 않아요'); return; }
     clearTimeout(speakWatch);
     primeTTS();
-    speechSynthesis.cancel();
+    /* 아이폰에서는 cancel() 직후 speak() 하면 소리가 나지 않는 일이 있어,
+       실제로 말하고 있을 때만 멈춥니다. */
+    if (speechSynthesis.speaking) speechSynthesis.cancel();
     if (speechSynthesis.paused) speechSynthesis.resume();
     if (!voice) pickVoice();
     var u = new SpeechSynthesisUtterance(plain(text));
     u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1; u.volume = 1;
-    if (voice && !retryPlain) u.voice = voice;
+    /* 아이폰 사파리는 voice 를 직접 지정하면 조용해지는 경우가 있어,
+       토익 보카에서 직접 고른 음성이 없으면 기기 기본 음성에 맡깁니다. */
+    var picked = null;
+    try { picked = localStorage.getItem(VOICE_KEY); } catch (e) {}
+    if (voice && !retryPlain && (!IS_IOS || picked)) u.voice = voice;
     var started = false;
     if (btn) btn.classList.add('play');
     u.onstart = function () { started = true; clearTimeout(speakWatch); };
@@ -2219,13 +2227,15 @@ sents:[
     speechSynthesis.speak(u);
     /* 오류도 없이 조용히 끝나는 경우(엣지 온라인 음성 등) 기본 음성으로 한 번 더 */
     speakWatch = setTimeout(function () {
-      if (started) return;
+      if (started || speechSynthesis.speaking) return;
       if (btn) btn.classList.remove('play');
       if (!retryPlain) { speak(text, btn, true); return; }
-      toast(enVoices().length
-        ? '음성이 재생되지 않았어요. 기기 음량과 음성 설정을 확인해 주세요'
-        : '이 기기에 영어 음성이 없어 재생하지 못했어요');
-    }, 1000);
+      toast(IS_IOS
+        ? '소리가 나지 않으면 아이폰 측면 무음 스위치와 볼륨을 확인해 주세요'
+        : (enVoices().length
+          ? '음성이 재생되지 않았어요. 기기 음량과 음성 설정을 확인해 주세요'
+          : '이 기기에 영어 음성이 없어 재생하지 못했어요'));
+    }, IS_IOS ? 2500 : 1200);
   }
 
   /* ============================================================

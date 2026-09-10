@@ -327,6 +327,17 @@
   }
   .check-btn.checked { background: var(--green-dot); border-color: var(--green-dot); color: white; }
 
+  /* 잠깐 뜨는 안내 */
+  .toast {
+    position: fixed; left: 50%; transform: translateX(-50%) translateY(8px);
+    bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 400;
+    background: var(--navy); color: var(--white);
+    padding: 10px 16px; border-radius: 11px; font-size: 0.8rem; font-weight: 600;
+    max-width: 90vw; text-align: center; line-height: 1.5;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+  }
+  .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   /* 발음 듣기 */
   .spk {
     width: 28px; height: 28px; flex-shrink: 0;
@@ -900,6 +911,7 @@
   </button>
 </nav>
 
+<div class="toast" id="toast"></div>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-label="DAY 목록">
   <div class="drawer-hd">
@@ -10072,15 +10084,36 @@ function spkBtn(text, size) {
    </button>`;
 }
 
+let toastT = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('on'), 2600);
+}
+
 function say(btn) {
-  if (!window.speechSynthesis) return;
+  if (!window.speechSynthesis) {
+    toast('이 브라우저는 발음 재생을 지원하지 않아요');
+    return;
+  }
   speechSynthesis.cancel();
   document.querySelectorAll('.spk.play').forEach(b => b.classList.remove('play'));
   const u = new SpeechSynthesisUtterance(btn.dataset.say);
   u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1;
+  if (!ttsVoice) pickVoice();          // 음성 목록이 늦게 오는 브라우저 대비
   if (ttsVoice) u.voice = ttsVoice;
   btn.classList.add('play');
-  u.onend = u.onerror = () => btn.classList.remove('play');
+  u.onend = () => btn.classList.remove('play');
+  /* 기기에 영어 음성이 없으면 소리 없이 끝나므로 이유를 알려줍니다.
+     (직전 재생을 끊어서 나는 interrupted·canceled 는 알릴 일이 아닙니다.) */
+  u.onerror = (e) => {
+    btn.classList.remove('play');
+    const err = e && e.error;
+    if (err === 'interrupted' || err === 'canceled') return;
+    toast('이 기기에 영어 음성이 없어 재생하지 못했어요');
+  };
   speechSynthesis.speak(u);
 }
 

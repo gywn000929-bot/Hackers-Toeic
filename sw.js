@@ -1,7 +1,7 @@
 /* 오프라인 실행용 서비스 워커.
    페이지 자체가 자체 완결형이라 한 번만 받아두면 비행기 모드에서도 열립니다.
    내용을 고쳐 배포할 때는 CACHE 버전을 올리세요. */
-const CACHE = 'opic-ih-1000-v2';
+const CACHE = 'opic-ih-1000-v3';
 const ASSETS = [
   './opic_ih_daily_english.html',
   './manifest.webmanifest',

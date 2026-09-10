@@ -128,6 +128,17 @@ button { background: none; border: none; cursor: pointer; }
 
 .app { max-width: 520px; margin: 0 auto; min-height: 100vh; background: var(--bg); }
 
+/* 데스크톱(윈도우·맥)에 설치해 창으로 띄웠을 때 — 가운데 앱 카드처럼 보이게 */
+@media (min-width: 760px) {
+  body { background: var(--surface-2); }
+  .app { box-shadow: var(--shadow); border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .dock button:hover { background: var(--line-soft); color: var(--ink-2); }
+  .dock button.pri:hover { filter: brightness(1.06); color: var(--bg); }
+  .pill-set button:hover:not(.on) { color: var(--ink-2); }
+}
+
 /* ============================================================
    HEADER
    ============================================================ */
@@ -350,6 +361,11 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
   padding: 13px 0; border-bottom: 1px solid var(--line-soft);
 }
 .row:last-child { border-bottom: none; }
+.row[hidden] { display: none; }
+.btn-go {
+  flex: 0 0 auto; padding: 7px 14px; border-radius: 9px; font-size: .78rem; font-weight: 800;
+  background: var(--word); color: var(--bg);
+}
 .row-l .rt { font-size: .87rem; font-weight: 700; }
 .row-l .rs { font-size: .72rem; color: var(--ink-3); margin-top: 2px; line-height: 1.45; }
 .pill-set { display: flex; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 3px; flex: 0 0 auto; }
@@ -546,6 +562,51 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
 .rv-tools { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
 .rv-tools button { font-size: .74rem; font-weight: 700; color: var(--ink-3); padding: 7px 12px; border-radius: 9px; border: 1px solid var(--line); }
 
+/* ============================================================
+   ✍️ 영작
+   ============================================================ */
+.wr-scope { width: 100%; margin: 6px 0 10px; }
+.wr-scope button { flex: 1; }
+.wr-stat { display: flex; justify-content: space-between; gap: 8px; font-size: .72rem; color: var(--ink-3); padding-bottom: 10px; }
+.wr-empty { padding: 26px 8px; text-align: center; color: var(--ink-3); font-size: .82rem; line-height: 1.7; }
+.wr-q { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.wr-tag { font-size: .66rem; font-weight: 800; color: var(--ink-3); letter-spacing: .3px; }
+.wr-ko { font-size: 1.02rem; font-weight: 700; line-height: 1.55; margin-top: 6px; }
+.wr-hint { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
+.wr-chip {
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2);
+  border-radius: 8px; padding: 4px 9px; font-size: .71rem; font-weight: 700;
+}
+.wr-chip.on { border-color: var(--word); color: var(--word); background: var(--word-bg); }
+.wr-ta {
+  width: 100%; margin-top: 12px; min-height: 82px; resize: vertical;
+  border: 1px solid var(--line); border-radius: 12px; padding: 12px;
+  background: var(--bg); color: var(--ink); font-family: var(--serif);
+  font-size: .95rem; line-height: 1.55;
+}
+.wr-ta:focus { outline: none; border-color: var(--word); }
+.wr-btns { display: flex; gap: 8px; margin-top: 12px; }
+.wr-btns button {
+  flex: 1; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2);
+  border-radius: 11px; padding: 11px 6px; font-size: .82rem; font-weight: 800;
+}
+.wr-btns button.pri { background: var(--word); border-color: var(--word); color: var(--bg); }
+.wr-res { margin-top: 14px; }
+.wr-score { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.wr-score b { font-size: 1.7rem; line-height: 1; }
+.wr-score span { font-size: .8rem; font-weight: 700; color: var(--ink-2); }
+.wr-line { margin-top: 12px; }
+.wr-line .lab { display: block; font-size: .66rem; font-weight: 800; color: var(--ink-3); margin-bottom: 3px; }
+.wr-line .txt { font-family: var(--serif); font-size: .95rem; line-height: 1.75; }
+.wr-ok { color: var(--ok); font-weight: 600; }
+.wr-near { color: var(--sent); font-weight: 600; border-bottom: 1px dashed var(--sent); }
+.wr-extra { color: var(--no); text-decoration: line-through; opacity: .85; }
+.wr-miss { color: var(--no); font-weight: 700; }
+.wr-tip { margin-top: 12px; background: var(--sent-bg); color: var(--ink-2); border-radius: 10px; padding: 10px 12px; font-size: .76rem; line-height: 1.6; }
+.wr-sum { text-align: center; padding: 22px 8px; }
+.wr-sum .big { font-size: 2.2rem; font-weight: 800; }
+.wr-sum .lab { font-size: .76rem; color: var(--ink-3); margin-top: 4px; }
+
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
@@ -605,6 +666,9 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
     <button id="dockQuiz" class="pri">
       <svg viewBox="0 0 24 24"><path d="M9 9a3 3 0 116 0c0 2-3 2.5-3 4.5"/><circle cx="12" cy="18" r=".6"/></svg>퀴즈
     </button>
+    <button id="dockWrite">
+      <svg viewBox="0 0 24 24"><path d="M4 20h16M5 15.5L15.5 5a2.1 2.1 0 013 3L8 18.5l-4 1z"/></svg>영작
+    </button>
     <button id="dockNext">
       <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>다음 주제
     </button>
@@ -623,6 +687,10 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
     </button>
   </div>
   <div class="sheet-body">
+    <div class="row" id="rowInstall" hidden>
+      <div class="row-l"><div class="rt">앱으로 설치</div><div class="rs">바탕화면·시작 메뉴에 추가해 창으로 실행</div></div>
+      <button class="btn-go" id="btnInstall">설치</button>
+    </div>
     <div class="row">
       <div class="row-l"><div class="rt">전체 진도</div><div class="rs" id="totalStat">–</div></div>
     </div>
@@ -687,6 +755,18 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
     </div>
     <div class="row"><button class="danger" id="btnReset">학습 기록 전체 초기화</button></div>
   </div>
+</div>
+
+<!-- 영작 시트 -->
+<div class="sheet" id="sheetWrite">
+  <div class="grab"></div>
+  <div class="sheet-hd">
+    <div class="sheet-t">✍️ 영작</div>
+    <button class="ic" data-close aria-label="닫기">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="sheet-body" id="wrBody"></div>
 </div>
 
 <!-- 퀴즈 시트 -->
@@ -766,7 +846,10 @@ window.TOPICS = [];
     srsDay: { d: 0, n: 0, rv: 0 },             // 오늘 소화한 신규/복습 수
     streak: { n: 0, last: 0 },                 // 연속 학습일
     srsDeck: 'all',                            // all | topic | fav
-    srsNew: 20, srsRev: 200, srsDir: 'mix'     // 하루 신규/복습 한도, 출제 방향
+    srsNew: 20, srsRev: 200, srsDir: 'mix',    // 하루 신규/복습 한도, 출제 방향
+    /* ✍️ 영작 */
+    today: { d: 0, ids: [] },                  // 오늘 배운 카드 id (영작 출제용)
+    wr: { d: 0, n: 0, sum: 0 }                 // 오늘 영작한 문장 수와 점수 합
   };
   try {
     var raw = localStorage.getItem(KEY);
@@ -871,6 +954,16 @@ window.TOPICS = [];
     var t = dayStart(Date.now());
     if (S.srsDay.d !== t) S.srsDay = { d: t, n: 0, rv: 0 };
   }
+  /* 오늘 배운 카드 — 영작 문제를 여기서 뽑습니다. */
+  function learned(id) {
+    var t = dayStart(Date.now());
+    if (!S.today || S.today.d !== t) S.today = { d: t, ids: [] };
+    if (S.today.ids.indexOf(id) < 0) {
+      S.today.ids.push(id);
+      if (S.today.ids.length > 400) S.today.ids.shift();
+    }
+  }
+
   function bumpStreak() {
     var t = dayStart(Date.now());
     if (S.streak.last === t) return;
@@ -979,6 +1072,7 @@ window.TOPICS = [];
     var was = S.srs[id];
     var wasNew = !was, wasReview = was && was.s === 2;
     S.srs[id] = schedule(was, g, false);
+    learned(id);
     rollDay();
     if (wasNew) S.srsDay.n++;
     else if (wasReview) S.srsDay.rv++;
@@ -1363,6 +1457,7 @@ window.TOPICS = [];
       if (act === 'done') {
         S.done[id] = !S.done[id];
         if (!S.done[id]) delete S.done[id];
+        else learned(id);
         save();
         if (S.hideDone) { render(); if (S.done[id]) toast('완료! 목록에서 숨겼어요'); }
         else { btn.classList.toggle('on', !!S.done[id]); card.classList.toggle('done', !!S.done[id]); render(); }
@@ -1727,6 +1822,280 @@ window.TOPICS = [];
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) fcMove(dx < 0 ? 1 : -1);
   }, { passive: true });
 
+  /* ============================================================
+     ✍️ 영작 — 배운 표현을 한글 뜻만 보고 영어로 옮겨 봅니다.
+     인터넷 없이 돌아가야 하므로 채점은 앱 안의 모범 문장과
+     단어 단위로 맞춰 보는 방식입니다. 어형(-s, -ed, -ing)이 다른 건
+     '거의 맞음'으로 봐 주고, 빠진 단어와 군더더기를 표시해 줍니다.
+     ============================================================ */
+  var W = { q: [], i: 0, checked: false, hint: false, scope: 'today', last: null };
+  var WR_SET = 10;
+
+  function wTokens(s) {
+    var t = plain(s).toLowerCase();
+    if (t.normalize) t = t.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    t = t.replace(/[‘’ʼ]/g, "'").replace(/[^a-z0-9'\s-]/g, ' ');
+    var raw = t.split(/[\s-]+/), out = [];
+    for (var i = 0; i < raw.length; i++) if (raw[i]) out.push(raw[i]);
+    return out;
+  }
+  function wStem(w) {
+    w = w.replace(/'s$/, '').replace(/^'|'$/g, '');
+    if (w.length > 4 && /ies$/.test(w)) return w.slice(0, -3) + 'y';
+    if (w.length > 4 && /(ches|shes|sses|xes)$/.test(w)) return w.slice(0, -2);
+    if (w.length > 3 && /s$/.test(w) && !/ss$/.test(w)) return w.slice(0, -1);
+    if (w.length > 4 && /ing$/.test(w)) return w.slice(0, -3);
+    if (w.length > 4 && /ed$/.test(w)) return w.slice(0, -2);
+    return w;
+  }
+  function wSame(a, b) { return a === b || wStem(a) === wStem(b); }
+
+  /* 내 문장과 모범 문장을 최장 공통 부분수열로 맞춰 봅니다. */
+  function wAlign(mine, ref) {
+    var n = mine.length, m = ref.length, i, j, dp = [];
+    for (i = 0; i <= n; i++) { dp[i] = []; for (j = 0; j <= m; j++) dp[i][j] = 0; }
+    for (i = n - 1; i >= 0; i--) {
+      for (j = m - 1; j >= 0; j--) {
+        dp[i][j] = wSame(mine[i], ref[j])
+          ? dp[i + 1][j + 1] + 1
+          : Math.max(dp[i + 1][j], dp[i][j + 1]);
+      }
+    }
+    var ops = []; i = 0; j = 0;
+    while (i < n && j < m) {
+      if (wSame(mine[i], ref[j])) { ops.push({ t: 'ok', w: mine[i], exact: mine[i] === ref[j] }); i++; j++; }
+      else if (dp[i + 1][j] >= dp[i][j + 1]) { ops.push({ t: 'extra', w: mine[i] }); i++; }
+      else { ops.push({ t: 'miss', w: ref[j] }); j++; }
+    }
+    while (i < n) ops.push({ t: 'extra', w: mine[i++] });
+    while (j < m) ops.push({ t: 'miss', w: ref[j++] });
+    return { ops: ops, lcs: dp[0][0] };
+  }
+
+  function wGrade(text, q) {
+    var mine = wTokens(text), ref = wTokens(q.en);
+    var a = wAlign(mine, ref);
+    var score = (mine.length + ref.length) ? Math.round(200 * a.lcs / (mine.length + ref.length)) : 0;
+    var used = true;
+    if (q.target) {
+      used = false;
+      var tg = wTokens(q.target);
+      for (var i = 0; i < tg.length && !used; i++) {
+        for (var j = 0; j < mine.length; j++) if (wSame(mine[j], tg[i])) { used = true; break; }
+      }
+    }
+    return { score: score, ops: a.ops, used: used, empty: !mine.length };
+  }
+
+  function wLevel(sc) {
+    if (sc >= 85) return { t: '모범 문장과 거의 같아요', c: 'var(--ok)' };
+    if (sc >= 65) return { t: '충분히 통하는 문장이에요', c: 'var(--ok)' };
+    if (sc >= 40) return { t: '뜻은 전해져요 — 표현을 다듬어 볼까요', c: 'var(--sent)' };
+    return { t: '모범 문장과 많이 달라요', c: 'var(--no)' };
+  }
+
+  /* ---------- 문제 만들기 ---------- */
+  function wMake(it) {
+    var d = it.d;
+    if (it.kind === 's') {
+      if (!d.en || !d.kr) return null;
+      return { ko: d.kr, en: plain(d.en), target: '', tip: d.tip || '', label: '문장' };
+    }
+    if (!d.ex || !d.exkr) return null;
+    return { ko: d.exkr, en: plain(d.ex), target: d.en, tip: d.tip || '', label: KIND_LABEL[it.kind] };
+  }
+
+  function wPool() {
+    var pool = [], i, kk, arr;
+    if (W.scope === 'today') {
+      var t = dayStart(Date.now());
+      var ids = (S.today && S.today.d === t) ? S.today.ids : [];
+      for (i = 0; i < ids.length; i++) {
+        var p = String(ids[i]).split('.');
+        arr = items(+p[0], p[1]);
+        if (arr && arr[+p[2]]) pool.push({ ti: +p[0], kind: p[1], i: +p[2], d: arr[+p[2]] });
+      }
+    } else if (W.scope === 'topic') {
+      for (kk in KINDS) {
+        arr = items(S.topic, kk);
+        for (i = 0; i < arr.length; i++) pool.push({ ti: S.topic, kind: kk, i: i, d: arr[i] });
+      }
+    } else {
+      for (i = 0; i < ALL.length; i++) {
+        if (S.star[uid(ALL[i].ti, ALL[i].kind, ALL[i].i)]) pool.push(ALL[i]);
+      }
+    }
+    var out = [];
+    for (i = 0; i < pool.length; i++) {
+      var q = wMake(pool[i]);
+      if (q) out.push(q);
+    }
+    return out;
+  }
+
+  function wRollDay() {
+    var t = dayStart(Date.now());
+    if (!S.wr || S.wr.d !== t) S.wr = { d: t, n: 0, sum: 0 };
+  }
+
+  function wStart() {
+    var pool = wPool();
+    W.q = shuffle(pool).slice(0, WR_SET);
+    W.i = 0; W.checked = false; W.hint = false; W.last = null;
+    wRender();
+  }
+
+  /* ---------- 화면 ---------- */
+  function wHead() {
+    wRollDay();
+    var opts = [['today', '오늘 배운 것'], ['topic', '이 주제'], ['fav', '★']];
+    var h = '<div class="pill-set wr-scope" id="wrScope">';
+    for (var i = 0; i < opts.length; i++) {
+      h += '<button data-v="' + opts[i][0] + '"' + (W.scope === opts[i][0] ? ' class="on"' : '') + '>' + opts[i][1] + '</button>';
+    }
+    h += '</div><div class="wr-stat"><span>오늘 ' + S.wr.n + '문장</span><span>' +
+         (S.wr.n ? '평균 ' + Math.round(S.wr.sum / S.wr.n) + '점' : '한글 뜻을 보고 영어로 써 보세요') +
+         '</span></div>';
+    return h;
+  }
+
+  function wRender() {
+    var b = $('#wrBody');
+    var h = wHead();
+
+    if (!W.q.length) {
+      h += '<div class="wr-empty">' + (W.scope === 'today'
+        ? '오늘 배운 카드가 아직 없어요.<br>카드를 ✓ 로 완료하거나 🧠 복습을 하면<br>그 표현들이 여기로 모입니다.'
+        : (W.scope === 'fav' ? '★ 로 담아둔 카드가 없어요.' : '이 주제에는 영작할 예문이 없어요.')) +
+        '</div>';
+      b.innerHTML = h;
+      return;
+    }
+
+    if (W.i >= W.q.length) {                       /* 세트 요약 */
+      var avg = W.setN ? Math.round(W.setSum / W.setN) : 0;
+      h += '<div class="wr-sum"><div class="big" style="color:' + wLevel(avg).c + '">' + avg + '</div>' +
+           '<div class="lab">' + W.setN + '문장 평균 점수</div></div>' +
+           '<div class="wr-btns"><button data-w="again" class="pri">한 세트 더</button>' +
+           '<button data-w="close">그만하기</button></div>';
+      b.innerHTML = h;
+      return;
+    }
+
+    var q = W.q[W.i];
+    h += '<div class="wr-q">' +
+         '<div class="wr-tag">' + (W.i + 1) + ' / ' + W.q.length + ' · ' + esc(q.label) + '</div>' +
+         '<div class="wr-ko">' + esc(q.ko) + '</div>' +
+         '<div class="wr-hint"><span class="wr-chip">단어 ' + wTokens(q.en).length + '개</span>';
+    if (q.target) {
+      h += W.hint
+        ? '<span class="wr-chip on">' + esc(plain(q.target)) + '</span>'
+        : '<button class="wr-chip" data-w="hint">💡 단어 힌트</button>';
+    }
+    h += '</div>' +
+         '<textarea class="wr-ta en" id="wrTa" placeholder="영어로 써 보세요" autocapitalize="sentences" spellcheck="false"' +
+         (W.checked ? ' readonly' : '') + '>' + esc(W.text || '') + '</textarea>';
+
+    h += '<div class="wr-btns">';
+    if (W.checked) {
+      h += '<button data-w="retry">다시 쓰기</button><button data-w="next" class="pri">' +
+           (W.i + 1 >= W.q.length ? '결과 보기' : '다음 문장') + '</button>';
+    } else {
+      h += '<button data-w="skip">모범 문장 보기</button><button data-w="check" class="pri">채점</button>';
+    }
+    h += '</div>';
+
+    if (W.checked && W.last) {
+      var r = W.last, lv = wLevel(r.score), i;
+      h += '<div class="wr-res"><div class="wr-score"><b style="color:' + lv.c + '">' + r.score + '</b>' +
+           '<span>점 · ' + lv.t + '</span>';
+      if (q.target) {
+        h += '<span class="wr-chip"' + (r.used ? '' : ' style="border-color:var(--no);color:var(--no)"') + '>핵심 단어 ' +
+             (r.used ? '✓' : '✗') + '</span>';
+      }
+      h += '</div>';
+
+      if (!r.empty) {
+        var mine = '';
+        for (i = 0; i < r.ops.length; i++) {
+          var o = r.ops[i];
+          if (o.t === 'ok') mine += '<span class="' + (o.exact ? 'wr-ok' : 'wr-near') + '">' + esc(o.w) + '</span> ';
+          else if (o.t === 'extra') mine += '<span class="wr-extra">' + esc(o.w) + '</span> ';
+        }
+        h += '<div class="wr-line"><span class="lab">내가 쓴 문장</span><div class="txt">' + mine + '</div></div>';
+      }
+
+      h += '<div class="wr-line"><span class="lab">모범 문장</span><div class="txt">' + esc(q.en) +
+           ' <button class="wr-chip" data-w="say">🔊</button></div></div>';
+
+      var miss = [];
+      for (i = 0; i < r.ops.length; i++) if (r.ops[i].t === 'miss') miss.push(r.ops[i].w);
+      if (miss.length) {
+        h += '<div class="wr-line"><span class="lab">빠진 단어</span><div class="txt"><span class="wr-miss">' +
+             esc(miss.slice(0, 8).join(', ')) + '</span></div></div>';
+      }
+      if (q.tip) h += '<div class="wr-tip">' + esc(plain(q.tip)) + '</div>';
+      h += '</div>';
+    }
+    h += '</div>';
+    b.innerHTML = h;
+
+    var ta = $('#wrTa');
+    if (ta && !W.checked) {
+      ta.value = W.text || '';
+      ta.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); wCheck(); }
+      });
+      ta.addEventListener('input', function () { W.text = ta.value; });
+    }
+  }
+
+  function wCheck() {
+    var ta = $('#wrTa'); if (!ta) return;
+    var txt = ta.value.trim();
+    if (!txt) { toast('영어 문장을 써 주세요'); return; }
+    var q = W.q[W.i];
+    W.text = txt;
+    W.last = wGrade(txt, q);
+    W.checked = true;
+    wRollDay();
+    S.wr.n++; S.wr.sum += W.last.score;
+    W.setN = (W.setN || 0) + 1; W.setSum = (W.setSum || 0) + W.last.score;
+    bumpStreak();
+    save();
+    wRender();
+    if (S.autoSpeak) speak(q.en);
+  }
+
+  $('#wrBody').addEventListener('click', function (e) {
+    var sc = e.target.closest('#wrScope button');
+    if (sc) { W.scope = sc.dataset.v; W.setN = 0; W.setSum = 0; W.text = ''; wStart(); return; }
+    var b = e.target.closest('[data-w]'); if (!b) return;
+    var act = b.dataset.w, q = W.q[W.i];
+    if (act === 'check') wCheck();
+    else if (act === 'hint') { W.hint = true; wRender(); }
+    else if (act === 'skip') {
+      W.text = $('#wrTa') ? $('#wrTa').value : '';
+      W.last = wGrade(W.text, q);
+      W.checked = true;
+      wRender();
+    }
+    else if (act === 'retry') { W.checked = false; W.last = null; W.text = ''; wRender(); setTimeout(function () { var t = $('#wrTa'); if (t) t.focus(); }, 60); }
+    else if (act === 'next') { W.i++; W.checked = false; W.last = null; W.hint = false; W.text = ''; wRender(); }
+    else if (act === 'again') { W.setN = 0; W.setSum = 0; wStart(); }
+    else if (act === 'close') sheetClose();
+    else if (act === 'say') speak(q.en, b);
+  });
+
+  $('#dockWrite').addEventListener('click', function () {
+    W.setN = 0; W.setSum = 0; W.text = ''; W.hint = false;
+    var pool = wPool();
+    if (!pool.length && W.scope === 'today') W.scope = 'topic';
+    wStart();
+    sheetOpen('#sheetWrite');
+    $('#sheetWrite').querySelector('.sheet-body').scrollTop = 0;
+  });
+
   /* ---------- 시작 ---------- */
   if (S.topic >= T.length) S.topic = 0;
   rollDay();
@@ -1741,6 +2110,36 @@ window.TOPICS = [];
       navigator.serviceWorker.register('./sw.js').catch(function () {});
     });
   }
+
+  /* 설치 — 윈도우 엣지·크롬, 안드로이드 크롬에서만 설치 안내가 옵니다.
+     (아이폰 사파리는 이 이벤트가 없어 공유 → 홈 화면에 추가로 설치합니다.) */
+  var installEvt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    installEvt = e;
+    $('#rowInstall').hidden = false;
+  });
+  $('#btnInstall').addEventListener('click', function () {
+    if (!installEvt) return;
+    var e = installEvt; installEvt = null;
+    $('#rowInstall').hidden = true;
+    e.prompt();
+  });
+  window.addEventListener('appinstalled', function () {
+    installEvt = null;
+    $('#rowInstall').hidden = true;
+  });
+
+  /* 키보드 — 데스크톱 앱 창에서 마우스 없이도 쓰도록.
+     Esc 로 시트를 닫고, 플래시카드에서는 ← → 이동 · 스페이스로 뒤집습니다. */
+  document.addEventListener('keydown', function (e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if (e.key === 'Escape' && document.querySelector('.sheet.open')) { sheetClose(); return; }
+    if (!$('#sheetFlash').classList.contains('open')) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); fcMove(-1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); fcMove(1); }
+    else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); F.flip = !F.flip; fcRender(); }
+  });
 })();
 </script>
 </body>

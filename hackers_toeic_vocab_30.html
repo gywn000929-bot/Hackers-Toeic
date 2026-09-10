@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>해커스 토익 기출 보카 | 인터랙티브 전자책</title>
+<meta name="description" content="해커스 토익 기출 보카 30일 완성. 예문·팁·파생어와 퀴즈까지 한 페이지에.">
+<meta name="theme-color" content="#1b2a4a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="토익 보카">
+<link rel="manifest" href="./manifest-toeic.webmanifest">
+<link rel="apple-touch-icon" href="./icons-toeic/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons-toeic/icon-192.png">
 <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -359,6 +367,32 @@
   .ei-kr { color: #4a3a42; flex: 1; }
   @media (max-width: 640px) { .ei-en { min-width: 110px; } }
 
+  /* ── 휴대폰 · 좁은 창 ──
+     사이드바를 가로 스크롤 칩으로 눕히고 헤더를 두 줄로 접습니다. */
+  @media (max-width: 720px) {
+    .header { padding: 10px 14px; gap: 8px; flex-wrap: wrap; }
+    .header-title { font-size: 1rem; }
+    .header-sub { font-size: 0.7rem; }
+    .header-right { width: 100%; flex-wrap: wrap; }
+    .search-box { flex: 1 1 120px; width: auto; padding: 7px 14px; }
+    .layout { flex-direction: column; height: auto; }
+    .sidebar {
+      display: flex; gap: 6px;
+      width: 100%; min-width: 0;
+      overflow-x: auto; overflow-y: hidden;
+      padding: 8px 12px;
+      border-right: none; border-bottom: 1px solid var(--gray-mid);
+    }
+    .sidebar-title { display: none; }
+    .day-btn {
+      flex: 0 0 auto; width: auto; white-space: nowrap;
+      border: 1px solid var(--gray-mid); border-radius: 20px; padding: 6px 12px;
+    }
+    .day-btn.active { border-color: var(--accent); border-right-width: 1px; }
+    .main { padding: 16px 14px; overflow-y: visible; }
+    .day-header { padding: 18px 16px; border-radius: 14px; flex-wrap: wrap; gap: 12px; }
+  }
+
   /* RELATED WORDS */
   .related { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
   .related-chip {
@@ -607,6 +641,7 @@
     <input type="text" class="search-box" placeholder="🔍 단어 검색..." id="searchInput" oninput="handleSearch(this.value)">
     <button class="mode-btn active" onclick="setMode('study')" id="btnStudy">📚 학습</button>
     <button class="mode-btn" onclick="setMode('quiz')" id="btnQuiz">🎯 퀴즈</button>
+    <button class="mode-btn" onclick="doInstall()" id="btnInstall" hidden>⬇️ 설치</button>
   </div>
 </div>
 
@@ -9440,6 +9475,40 @@ function showResult() {
     <button class="start-quiz-btn" onclick="startQuiz()">🔄 다시 도전</button>
     <button class="start-quiz-btn" style="background:var(--navy-light);margin-left:8px" onclick="showQuizSetup()">📋 유형 선택</button>
   </div>`;
+}
+
+
+// ====================================================
+// 앱으로 설치 / 오프라인 실행
+// ====================================================
+// 윈도우 엣지·크롬, 안드로이드 크롬에서만 설치 안내 이벤트가 옵니다.
+// (아이폰 사파리는 이 이벤트가 없어 공유 → 홈 화면에 추가로 설치합니다.)
+let installEvt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  installEvt = e;
+  document.getElementById('btnInstall').hidden = false;
+});
+
+function doInstall() {
+  if (!installEvt) return;
+  const e = installEvt;
+  installEvt = null;
+  document.getElementById('btnInstall').hidden = true;
+  e.prompt();
+}
+
+window.addEventListener('appinstalled', function() {
+  installEvt = null;
+  document.getElementById('btnInstall').hidden = true;
+});
+
+// 한 번 열어두면 인터넷이 끊겨도 열립니다. 파일을 직접 열었을 때는 조용히 넘어갑니다.
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').catch(function() {});
+  });
 }
 
 

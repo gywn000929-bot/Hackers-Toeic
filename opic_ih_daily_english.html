@@ -2175,13 +2175,31 @@ sents:[
     speechSynthesis.onvoiceschanged = pickVoice;
   }
   var speakWatch = null;
+  var ttsPrimed = false;
+
+  /* 아이폰과 설치한 앱 창에서는 첫 재생이 조용히 씹히는 일이 있어,
+     처음 화면을 누를 때 무음으로 한 번 깨워 둡니다. */
+  function primeTTS() {
+    if (ttsPrimed || !window.speechSynthesis) return;
+    ttsPrimed = true;
+    try {
+      var p = new SpeechSynthesisUtterance(' ');
+      p.volume = 0; p.lang = 'en-US';
+      speechSynthesis.speak(p);
+    } catch (e) {}
+  }
+  document.addEventListener('pointerdown', primeTTS, { once: true, capture: true });
+  document.addEventListener('keydown', primeTTS, { once: true, capture: true });
+
   function speak(text, btn, retryPlain) {
     if (!window.speechSynthesis) { toast('이 브라우저는 음성을 지원하지 않아요'); return; }
     clearTimeout(speakWatch);
+    primeTTS();
     speechSynthesis.cancel();
+    if (speechSynthesis.paused) speechSynthesis.resume();
     if (!voice) pickVoice();
     var u = new SpeechSynthesisUtterance(plain(text));
-    u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1;
+    u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1; u.volume = 1;
     if (voice && !retryPlain) u.voice = voice;
     var started = false;
     if (btn) btn.classList.add('play');
@@ -3387,6 +3405,14 @@ sents:[
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./sw.js').catch(function () {});
+    });
+    /* 설치한 앱이 옛 파일을 붙들고 있지 않도록, 새 버전이 자리를 잡으면 한 번 새로고침 */
+    var hadController = !!navigator.serviceWorker.controller;
+    var swReloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!hadController || swReloaded) return;   // 첫 방문에는 새로고침하지 않습니다
+      swReloaded = true;
+      location.reload();
     });
   }
 

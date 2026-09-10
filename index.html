@@ -373,6 +373,14 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./sw.js').catch(function () {});
     });
+    /* 설치한 앱이 옛 파일을 붙들고 있지 않도록, 새 버전이 자리를 잡으면 한 번 새로고침 */
+    var hadController = !!navigator.serviceWorker.controller;
+    var swReloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!hadController || swReloaded) return;   // 첫 방문에는 새로고침하지 않습니다
+      swReloaded = true;
+      location.reload();
+    });
   }
 })();
 </script>

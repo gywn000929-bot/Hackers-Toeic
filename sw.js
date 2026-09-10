@@ -4,7 +4,7 @@
    · hackers_toeic_vocab_30.html 토익 보카
    페이지가 자체 완결형이라 한 번만 받아두면 비행기 모드에서도 열립니다.
    내용을 고쳐 배포할 때는 CACHE 버전을 올리세요. */
-const CACHE = 'english-room-v6';
+const CACHE = 'english-room-v7';
 
 /* 앱 껍데기 — 설치할 때 미리 받아둡니다. */
 const HOME = './index.html';

@@ -8,11 +8,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="매일 영어">
+<meta name="apple-mobile-web-app-title" content="영어 공부방">
 <meta name="description" content="OPIc IH 수준 일상 영어 단어·숙어·문장 1000개. 안키식 간격 반복 복습 포함.">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icons/icon-180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons-app/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons-app/icon-192.png">
 <title>매일 영어 · OPIc IH 실전 표현 1000</title>
 <style>
 /* ============================================================
@@ -152,6 +152,7 @@ button { background: none; border: none; cursor: pointer; }
   padding: 10px 14px 8px;
 }
 .hd-mark {
+  text-decoration: none; cursor: pointer;
   width: 32px; height: 32px; border-radius: 9px; flex: 0 0 auto;
   background: var(--word); color: var(--bg);
   display: grid; place-items: center;
@@ -617,7 +618,7 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
 
   <header class="hd">
     <div class="hd-top">
-      <div class="hd-mark">IH</div>
+      <a class="hd-mark" href="./" aria-label="홈으로">IH</a>
       <div class="hd-txt">
         <div class="hd-t">매일 영어 · 실전 표현 1000</div>
         <div class="hd-s">OPIc IH · 단어 · 숙어 · 문장</div>

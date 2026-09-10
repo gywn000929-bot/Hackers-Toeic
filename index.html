@@ -13,8 +13,17 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icons-app/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons-app/icon-192.png">
+<script>/* 저장된 테마를 그리기 전에 적용 — 깜빡임 방지 */
+try{var t=localStorage.getItem('english-room-theme');if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <title>영어 공부방 · 매일 영어 + 토익 보카</title>
 <style>
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --ink:#16233d; --ink-2:#46536c; --ink-3:#7c8698;
   --bg:#fbfcfe; --surface:#ffffff; --surface-2:#f3f6fb;
@@ -24,23 +33,67 @@
   --sent:#b8792a; --sent-bg:#fbf1e2;
   --star:#e8a317; --ok:#2f9461; --ok-bg:#e8f5ee;
   --shadow: 0 1px 2px rgba(22,35,61,.05), 0 6px 18px -10px rgba(22,35,61,.18);
-  --sans: -apple-system, BlinkMacSystemFont, 'Pretendard Variable', Pretendard,
-          'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
-  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
-           'Times New Roman', serif;
+  --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+          'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+  --serif: var(--sans);          /* 영어도 같은 글꼴로 통일 */
   --safe-b: env(safe-area-inset-bottom, 0px);
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --ink:#e7ecf5; --ink-2:#a7b2c6; --ink-3:#74809a;
     --bg:#10151f; --surface:#161d2b; --surface-2:#1d2637;
     --line:#29334a; --line-soft:#212a3d;
     --word:#7ea4f5; --word-bg:#1c2947;
     --phrase:#55c3b7; --phrase-bg:#123331;
     --sent:#e0a75d; --sent-bg:#33260f;
-    --star:#f0b73f; --ok:#4fbb84; --ok-bg:#123326;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+    --star:#f0b73f; --ok:#4fbb84; --ok-bg:#123326; --no:#e8737f; --no-bg:#35181d;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+    --shadow-up:0 -1px 0 #29334a, 0 -10px 28px -16px rgba(0,0,0,.8);
   }
+}
+:root[data-theme="light"] {
+  --ink:#16233d; --ink-2:#46536c; --ink-3:#7c8698;
+  --bg:#fbfcfe; --surface:#ffffff; --surface-2:#f3f6fb;
+  --line:#e4e9f2; --line-soft:#eef2f8;
+  --word:#2f5fd0; --word-bg:#ecf1fd;
+  --phrase:#0f7a72; --phrase-bg:#e6f4f2;
+  --sent:#b8792a; --sent-bg:#fbf1e2;
+  --star:#e8a317; --ok:#2f9461; --ok-bg:#e8f5ee; --no:#d1495b; --no-bg:#fbebed;
+  --shadow:0 1px 2px rgba(22,35,61,.05), 0 6px 18px -10px rgba(22,35,61,.18);
+  --shadow-up:0 -1px 0 #e4e9f2, 0 -8px 24px -14px rgba(22,35,61,.28);
+}
+:root[data-theme="sepia"] {
+  --ink:#3f3423; --ink-2:#6b5c45; --ink-3:#97866c;
+  --bg:#f7f1e3; --surface:#fdf9f0; --surface-2:#f0e8d6;
+  --line:#e2d7c0; --line-soft:#ece3d1;
+  --word:#2b56a8; --word-bg:#e6e9f2;
+  --phrase:#2f6f5f; --phrase-bg:#e2ece5;
+  --sent:#9a6b25; --sent-bg:#f2e6cf;
+  --star:#c8901c; --ok:#3f7d54; --ok-bg:#e6efe0; --no:#b2483f; --no-bg:#f4e2dc;
+  --shadow:0 1px 2px rgba(63,52,35,.06), 0 6px 18px -10px rgba(63,52,35,.22);
+  --shadow-up:0 -1px 0 #e2d7c0, 0 -8px 24px -14px rgba(63,52,35,.3);
+}
+:root[data-theme="gray"] {
+  --ink:#1f2733; --ink-2:#4a5563; --ink-3:#7d8896;
+  --bg:#eceff3; --surface:#f9fafc; --surface-2:#e4e8ee;
+  --line:#d5dae2; --line-soft:#e2e6ec;
+  --word:#2f5fd0; --word-bg:#e5ebfa;
+  --phrase:#0f7a72; --phrase-bg:#e2efed;
+  --sent:#9d6c24; --sent-bg:#f5ecdd;
+  --star:#d49a15; --ok:#2f9461; --ok-bg:#e3f0e8; --no:#c9455a; --no-bg:#f7e3e6;
+  --shadow:0 1px 2px rgba(31,39,51,.06), 0 6px 18px -10px rgba(31,39,51,.25);
+  --shadow-up:0 -1px 0 #d5dae2, 0 -8px 24px -14px rgba(31,39,51,.3);
+}
+:root[data-theme="dark"] {
+  --ink:#e7ecf5; --ink-2:#a7b2c6; --ink-3:#74809a;
+  --bg:#10151f; --surface:#161d2b; --surface-2:#1d2637;
+  --line:#29334a; --line-soft:#212a3d;
+  --word:#7ea4f5; --word-bg:#1c2947;
+  --phrase:#55c3b7; --phrase-bg:#123331;
+  --sent:#e0a75d; --sent-bg:#33260f;
+  --star:#f0b73f; --ok:#4fbb84; --ok-bg:#123326; --no:#e8737f; --no-bg:#35181d;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+  --shadow-up:0 -1px 0 #29334a, 0 -10px 28px -16px rgba(0,0,0,.8);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -122,7 +175,21 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   flex: 0 0 auto; background: var(--word); color: var(--bg); border-radius: 10px;
   padding: 9px 16px; font-size: .8rem; font-weight: 800;
 }
-.foot { margin-top: 20px; font-size: .72rem; color: var(--ink-3); line-height: 1.7; text-align: center; }
+.theme-row {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);
+}
+.theme-row .lab { font-size: .72rem; font-weight: 800; color: var(--ink-3); margin-right: 2px; }
+.theme-row button {
+  display: flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2);
+  border-radius: 9px; padding: 6px 10px; font-size: .73rem; font-weight: 700;
+}
+.theme-row button i {
+  width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(125,125,125,.35);
+}
+.theme-row button.on { border-color: var(--word); color: var(--word); background: var(--word-bg); }
+.foot { margin-top: 18px; font-size: .72rem; color: var(--ink-3); line-height: 1.7; text-align: center; }
 </style>
 </head>
 <body>
@@ -171,6 +238,15 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   <div class="install" id="install">
     <div class="txt"><b>앱으로 설치하기</b>바탕화면·홈 화면에 두고 창으로 열 수 있어요.</div>
     <button id="btnInstall">설치</button>
+  </div>
+
+  <div class="theme-row" id="themeRow">
+    <span class="lab">테마</span>
+    <button data-t="auto"><i style="background:linear-gradient(135deg,#fbfcfe 50%,#10151f 50%)"></i>자동</button>
+    <button data-t="light"><i style="background:#fbfcfe"></i>라이트</button>
+    <button data-t="sepia"><i style="background:#f7f1e3"></i>세피아</button>
+    <button data-t="gray"><i style="background:#eceff3"></i>그레이</button>
+    <button data-t="dark"><i style="background:#10151f"></i>다크</button>
   </div>
 
   <p class="foot">
@@ -254,6 +330,25 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     $('#statOpic').insertAdjacentHTML('beforeend',
       '<span class="chip">오늘 영작 평균 <b>' + Math.round(wrSum / wrN) + '</b>점</span>');
   }
+
+  /* ---------- 테마 ---------- */
+  var THEME_KEY = 'english-room-theme';
+  function readTheme() {
+    try { return localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) { return 'auto'; }
+  }
+  function applyTheme(t) {
+    if (t === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', t);
+    var bs = $('#themeRow').querySelectorAll('button');
+    for (var i = 0; i < bs.length; i++) bs[i].classList.toggle('on', bs[i].dataset.t === t);
+  }
+  applyTheme(readTheme());
+  $('#themeRow').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-t]');
+    if (!b) return;
+    try { localStorage.setItem(THEME_KEY, b.dataset.t); } catch (err) {}
+    applyTheme(b.dataset.t);
+  });
 
   /* ---------- 설치 ---------- */
   var installEvt = null;

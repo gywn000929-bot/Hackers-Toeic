@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>/* 저장된 테마를 그리기 전에 적용 — 깜빡임 방지 */
+try{var t=localStorage.getItem('english-room-theme');if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <title>해커스 토익 기출 보카 | 인터랙티브 전자책</title>
 <meta name="description" content="해커스 토익 기출 보카 30일 완성. 예문·팁·파생어와 퀴즈까지 한 페이지에.">
 <meta name="theme-color" content="#1b2a4a">
@@ -13,6 +15,13 @@
 <link rel="apple-touch-icon" href="./icons-app/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons-app/icon-192.png">
 <style>
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
+    font-weight: 45 920;
+    font-style: normal;
+    font-display: swap;
+  }
   :root {
     /* 색·글꼴은 '매일 영어(OPIc)' 앱과 같은 값을 씁니다. */
     --navy: #16233d;          /* 잉크/메인 */
@@ -33,13 +42,68 @@
     --red: #d1495b;           /* 오답 */
     --no-bg: #fbebed;
     --star: #e8a317;          /* 별 */
+    --on-accent: #ffffff;     /* 파랑 버튼 위에 얹히는 글자 */
 
-    --sans: -apple-system, BlinkMacSystemFont, 'Pretendard Variable', Pretendard,
-            'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
-    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
-             'Times New Roman', serif;
+    --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+            'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+    --serif: var(--sans);        /* 영어도 같은 글꼴로 통일 */
     --shadow: 0 1px 2px rgba(22,35,61,.05), 0 6px 18px -10px rgba(22,35,61,.18);
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --navy:#e7ecf5; --navy-light:#a7b2c6; --gray-text:#74809a;
+      --gray-light:#10151f; --white:#161d2b; --surface-2:#1d2637;
+      --gray-mid:#29334a; --line-soft:#212a3d;
+      --accent:#7ea4f5; --navy-soft:#1c2947; --accent-light:#1c2947;
+      --yellow:#33260f; --yellow-border:#3f2f14;
+      --green-dot:#4fbb84; --ok-bg:#123326; --red:#e8737f; --no-bg:#35181d;
+      --star:#f0b73f;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+      --on-accent: #10151f;
+  }
+  }
+:root[data-theme="light"] {
+    --navy:#16233d; --navy-light:#46536c; --gray-text:#7c8698;
+    --gray-light:#fbfcfe; --white:#ffffff; --surface-2:#f3f6fb;
+    --gray-mid:#e4e9f2; --line-soft:#eef2f8;
+    --accent:#2f5fd0; --navy-soft:#ecf1fd; --accent-light:#ecf1fd;
+    --yellow:#fbf1e2; --yellow-border:#f2e6cf;
+    --green-dot:#2f9461; --ok-bg:#e8f5ee; --red:#d1495b; --no-bg:#fbebed;
+    --star:#e8a317;
+    --shadow:0 1px 2px rgba(22,35,61,.05), 0 6px 18px -10px rgba(22,35,61,.18);
+  }
+:root[data-theme="sepia"] {
+    --navy:#3f3423; --navy-light:#6b5c45; --gray-text:#97866c;
+    --gray-light:#f7f1e3; --white:#fdf9f0; --surface-2:#f0e8d6;
+    --gray-mid:#e2d7c0; --line-soft:#ece3d1;
+    --accent:#2b56a8; --navy-soft:#e6e9f2; --accent-light:#e6e9f2;
+    --yellow:#f2e6cf; --yellow-border:#e6d5b4;
+    --green-dot:#3f7d54; --ok-bg:#e6efe0; --red:#b2483f; --no-bg:#f4e2dc;
+    --star:#c8901c;
+    --shadow:0 1px 2px rgba(63,52,35,.06), 0 6px 18px -10px rgba(63,52,35,.22);
+  }
+:root[data-theme="gray"] {
+    --navy:#1f2733; --navy-light:#4a5563; --gray-text:#7d8896;
+    --gray-light:#eceff3; --white:#f9fafc; --surface-2:#e4e8ee;
+    --gray-mid:#d5dae2; --line-soft:#e2e6ec;
+    --accent:#2f5fd0; --navy-soft:#e5ebfa; --accent-light:#e5ebfa;
+    --yellow:#f5ecdd; --yellow-border:#e6d9c2;
+    --green-dot:#2f9461; --ok-bg:#e3f0e8; --red:#c9455a; --no-bg:#f7e3e6;
+    --star:#d49a15;
+    --shadow:0 1px 2px rgba(31,39,51,.06), 0 6px 18px -10px rgba(31,39,51,.25);
+  }
+:root[data-theme="dark"] {
+    --navy:#e7ecf5; --navy-light:#a7b2c6; --gray-text:#74809a;
+    --gray-light:#10151f; --white:#161d2b; --surface-2:#1d2637;
+    --gray-mid:#29334a; --line-soft:#212a3d;
+    --accent:#7ea4f5; --navy-soft:#1c2947; --accent-light:#1c2947;
+    --yellow:#33260f; --yellow-border:#3f2f14;
+    --green-dot:#4fbb84; --ok-bg:#123326; --red:#e8737f; --no-bg:#35181d;
+    --star:#f0b73f;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+    --on-accent: #10151f;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: var(--sans);
@@ -68,10 +132,10 @@
   .hd-mark {
     width: 36px; height: 36px; flex: 0 0 auto; border-radius: 11px;
     display: grid; place-items: center; text-decoration: none;
-    background: var(--navy); color: var(--white); font-size: 1.05rem; font-weight: 700;
-    transition: background 0.15s;
+    background: var(--accent); color: var(--on-accent); font-size: 1.05rem; font-weight: 700;
+    transition: filter 0.15s;
   }
-  .hd-mark:hover { background: var(--accent); }
+  .hd-mark:hover { filter: brightness(1.08); }
   .hd-txt { flex: 1; min-width: 0; }
   .hd-t {
     font-size: 1.02rem; font-weight: 800; letter-spacing: -0.4px; color: var(--navy);
@@ -111,7 +175,7 @@
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
   .seg button:hover { color: var(--accent); }
-  .seg button.on { background: var(--accent); border-color: var(--accent); color: var(--white); }
+  .seg button.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
   /* ── DAY 목록 서랍 ── */
   .scrim {
@@ -131,11 +195,41 @@
     padding: 14px 12px 10px 18px; border-bottom: 1px solid var(--gray-mid);
     font-size: 0.78rem; font-weight: 800; color: var(--navy-light); letter-spacing: 0.6px;
   }
+  .voice-row {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+    padding: 10px 14px; border-top: 1px solid var(--gray-mid);
+  }
+  .voice-row[hidden] { display: none; }
+  .voice-row .lab {
+    width: 100%; font-size: 0.7rem; font-weight: 800; color: var(--gray-text);
+    letter-spacing: 0.6px; margin-bottom: 2px;
+  }
+  .voice-row select {
+    flex: 1; min-width: 0; padding: 6px 8px; font-family: inherit; font-size: 0.72rem;
+    color: var(--navy); background: var(--surface-2);
+    border: 1px solid var(--gray-mid); border-radius: 8px;
+  }
+  .theme-row {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    padding: 10px 14px; border-top: 1px solid var(--gray-mid);
+  }
+  .theme-row .lab {
+    width: 100%; font-size: 0.7rem; font-weight: 800; color: var(--gray-text);
+    letter-spacing: 0.6px; margin-bottom: 2px;
+  }
+  .theme-row button {
+    display: flex; align-items: center; gap: 5px;
+    border: 1px solid var(--gray-mid); background: var(--surface-2); color: var(--navy-light);
+    border-radius: 8px; padding: 5px 8px; font-size: 0.71rem; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+  }
+  .theme-row button i { width: 11px; height: 11px; border-radius: 4px; border: 1px solid rgba(125,125,125,.35); }
+  .theme-row button.on { border-color: var(--accent); color: var(--accent); background: var(--navy-soft); }
   .drawer-ft { padding: 10px 14px calc(14px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--gray-mid); }
   .drawer-ft[hidden] { display: none; }
   .drawer-ft button {
     width: 100%; border-radius: 11px; padding: 10px;
-    background: var(--accent); border: 1px solid var(--accent); color: var(--white);
+    background: var(--accent); border: 1px solid var(--accent); color: var(--on-accent);
     font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: inherit;
   }
   .drawer-ft button[hidden] { display: none; }
@@ -171,7 +265,7 @@
     min-width: 30px;
     text-align: center;
   }
-  .day-btn.active .day-num { background: var(--accent); color: var(--white); border-color: var(--accent); }
+  .day-btn.active .day-num { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
   .day-topic { font-size: 0.73rem; font-weight: 500; color: var(--navy-light); }
 
   /* ── 하단 독 ── */
@@ -193,8 +287,8 @@
   }
   .dock button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
   .dock button:hover { color: var(--accent); border-color: var(--accent-light); }
-  .dock button.pri { background: var(--accent); border-color: var(--accent); color: var(--white); }
-  .dock button.pri:hover { filter: brightness(1.06); color: var(--white); }
+  .dock button.pri { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .dock button.pri:hover { filter: brightness(1.06); color: var(--on-accent); }
 
 
   /* ── MAIN ── */
@@ -325,13 +419,13 @@
     transition: all 0.2s;
     flex-shrink: 0;
   }
-  .check-btn.checked { background: var(--green-dot); border-color: var(--green-dot); color: white; }
+  .check-btn.checked { background: var(--green-dot); border-color: var(--green-dot); color: var(--on-accent); }
 
   /* 잠깐 뜨는 안내 */
   .toast {
     position: fixed; left: 50%; transform: translateX(-50%) translateY(8px);
     bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 400;
-    background: var(--navy); color: var(--white);
+    background: var(--navy); color: var(--gray-light);
     padding: 10px 16px; border-radius: 11px; font-size: 0.8rem; font-weight: 600;
     max-width: 90vw; text-align: center; line-height: 1.5;
     opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
@@ -348,7 +442,7 @@
   }
   .spk svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .spk:hover { border-color: var(--accent); color: var(--accent); }
-  .spk.play { background: var(--accent); border-color: var(--accent); color: var(--white); }
+  .spk.play { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .spk.sm {
     width: 22px; height: 22px; border-width: 1px; border-radius: 7px;
     vertical-align: middle; margin-left: 4px;
@@ -494,7 +588,7 @@
     flex: 1 1 140px; border-radius: 11px; padding: 12px 16px;
     font-family: inherit; font-size: 0.86rem; font-weight: 700; cursor: pointer;
   }
-  .wr-go { background: var(--accent); border: 1px solid var(--accent); color: var(--white); }
+  .wr-go { background: var(--accent); border: 1px solid var(--accent); color: var(--on-accent); }
   .wr-ghost { background: var(--white); border: 1px solid var(--gray-mid); color: var(--navy-light); }
   .wr-go:hover { filter: brightness(1.06); }
   .wr-ghost:hover { border-color: var(--accent); color: var(--accent); }
@@ -672,7 +766,7 @@
   }
   .start-quiz-btn {
     background: var(--accent);
-    color: var(--white);
+    color: var(--on-accent);
     border: 1px solid var(--accent);
     border-radius: 11px;
     padding: 11px 26px;
@@ -841,7 +935,7 @@
   .spell-input.wrong { border-color: var(--red); background: var(--no-bg); }
   .spell-mask { font-size: 1.1rem; color: var(--gray-text); letter-spacing: 3px; margin-bottom: 14px; font-family: var(--serif); }
   .spell-submit {
-    background: var(--accent); color: var(--white); border: 1px solid var(--accent); border-radius: 11px;
+    background: var(--accent); color: var(--on-accent); border: 1px solid var(--accent); border-radius: 11px;
     padding: 12px 30px; font-size: 0.98rem; font-weight: 700; cursor: pointer;
     margin-top: 8px; font-family: inherit; transition: background 0.18s;
   }
@@ -850,7 +944,7 @@
   /* 속도전 헤더 */
   .speed-banner {
     max-width: 620px; margin: 0 auto 14px; text-align:center;
-    background: var(--navy); color: var(--white); border-radius: 12px;
+    background: var(--accent); color: var(--on-accent); border-radius: 12px;
     padding: 10px 16px; font-size: 0.95rem; font-weight: 700;
   }
   .speed-time { font-size: 1.3rem; color: var(--star); font-variant-numeric: tabular-nums; }
@@ -921,6 +1015,22 @@
     </button>
   </div>
   <div class="sidebar" id="sidebar"></div>
+  <div class="voice-row" id="voiceRow" hidden>
+    <span class="lab">발음 음성</span>
+    <select onchange="setVoice(this.value)" aria-label="발음 음성 고르기"></select>
+    <button class="spk sm" data-say="This is how it sounds." title="들어보기"
+            onclick="say(this)" aria-label="들어보기">
+      <svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/></svg>
+    </button>
+  </div>
+  <div class="theme-row" id="themeRow">
+    <span class="lab">테마</span>
+    <button data-t="auto"><i style="background:linear-gradient(135deg,#fbfcfe 50%,#10151f 50%)"></i>자동</button>
+    <button data-t="light"><i style="background:#fbfcfe"></i>라이트</button>
+    <button data-t="sepia"><i style="background:#f7f1e3"></i>세피아</button>
+    <button data-t="gray"><i style="background:#eceff3"></i>그레이</button>
+    <button data-t="dark"><i style="background:#10151f"></i>다크</button>
+  </div>
   <div class="drawer-ft" id="drawerFt" hidden>
     <button id="btnInstall" onclick="doInstall()">⬇️ 앱으로 설치</button>
   </div>
@@ -10057,21 +10167,78 @@ function wrReveal() {                        // 채점 없이 모범 예문만 �
 }
 
 // ====================================================
+// 테마 — 홈·매일 영어와 같은 칸에 저장해 세 화면이 함께 바뀝니다.
+// ====================================================
+const THEME_KEY = 'english-room-theme';
+
+function readTheme() {
+  try { return localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) { return 'auto'; }
+}
+function applyTheme(t) {
+  if (t === 'auto') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('#themeRow button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+}
+applyTheme(readTheme());
+document.getElementById('themeRow').addEventListener('click', e => {
+  const b = e.target.closest('button[data-t]');
+  if (!b) return;
+  try { localStorage.setItem(THEME_KEY, b.dataset.t); } catch (err) {}
+  applyTheme(b.dataset.t);
+});
+
+
+// ====================================================
 // 발음 듣기 — 기기에 내장된 음성으로 읽어 줍니다.
 // 별도 오디오 파일이 없어 인터넷 없이도 동작합니다.
 // ====================================================
 let ttsVoice = null;
 
+const VOICE_KEY = 'english-room-voice';
+
+function enVoices() {
+  if (!window.speechSynthesis) return [];
+  return speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+}
+
+/* 기기에 설치된(오프라인) 음성을 먼저 고릅니다.
+   엣지의 'Online (Natural)' 음성은 인터넷이 막히면 소리 없이 끝나는 일이 있어
+   직접 고르지 않는 한 뒤로 미룹니다. */
 function pickVoice() {
   if (!window.speechSynthesis) return;
-  const vs = speechSynthesis.getVoices();
-  ttsVoice = vs.find(v => /en[-_]US/i.test(v.lang) && /Samantha|Google US|Aria|Jenny|Natural/i.test(v.name))
-          || vs.find(v => /^en/i.test(v.lang))
-          || null;
+  const vs = enVoices();
+  if (!vs.length) { ttsVoice = null; return; }
+  let saved = null;
+  try { saved = localStorage.getItem(VOICE_KEY); } catch (e) {}
+  const byName = saved && vs.find(v => v.name === saved);
+  if (byName) { ttsVoice = byName; return; }
+  const local = vs.filter(v => v.localService && !/online/i.test(v.name));
+  const us = a => a.find(v => /en[-_]US/i.test(v.lang));
+  ttsVoice = us(local) || local[0] || us(vs) || vs[0] || null;
 }
 if (window.speechSynthesis) {
   pickVoice();
-  speechSynthesis.onvoiceschanged = pickVoice;
+  speechSynthesis.onvoiceschanged = () => { pickVoice(); buildVoiceRow(); };
+}
+
+/* 서랍에서 음성을 직접 고를 수 있게 — 기기마다 되는 음성이 달라서요. */
+function buildVoiceRow() {
+  const wrap = document.getElementById('voiceRow');
+  if (!wrap) return;
+  const vs = enVoices();
+  if (!vs.length) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  const cur = ttsVoice ? ttsVoice.name : '';
+  wrap.querySelector('select').innerHTML = vs.map(v =>
+    `<option value="${v.name.replace(/"/g, '&quot;')}"${v.name === cur ? ' selected' : ''}>` +
+    `${v.name}${v.localService ? '' : ' (온라인)'}</option>`).join('');
+}
+
+function setVoice(name) {
+  try { localStorage.setItem(VOICE_KEY, name); } catch (e) {}
+  pickVoice();
+  const btn = document.querySelector('#voiceRow button');
+  if (btn) say(btn);                   // 고르자마자 들어볼 수 있게
 }
 
 /* 버튼 마크업 — 카드·예문·퀴즈에서 같은 모양으로 씁니다. */
@@ -10093,34 +10260,59 @@ function toast(msg) {
   toastT = setTimeout(() => el.classList.remove('on'), 2600);
 }
 
-function say(btn) {
+let sayWatch = null;
+
+function say(btn, retryPlain) {
   if (!window.speechSynthesis) {
     toast('이 브라우저는 발음 재생을 지원하지 않아요');
     return;
   }
+  clearTimeout(sayWatch);
   speechSynthesis.cancel();
   document.querySelectorAll('.spk.play').forEach(b => b.classList.remove('play'));
-  const u = new SpeechSynthesisUtterance(btn.dataset.say);
+
+  const text = btn.dataset.say;
+  const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1;
   if (!ttsVoice) pickVoice();          // 음성 목록이 늦게 오는 브라우저 대비
-  if (ttsVoice) u.voice = ttsVoice;
+  if (ttsVoice && !retryPlain) u.voice = ttsVoice;
+
+  let started = false;
   btn.classList.add('play');
-  u.onend = () => btn.classList.remove('play');
+  u.onstart = () => { started = true; clearTimeout(sayWatch); };
+  u.onend = () => { clearTimeout(sayWatch); btn.classList.remove('play'); };
   /* 기기에 영어 음성이 없으면 소리 없이 끝나므로 이유를 알려줍니다.
      (직전 재생을 끊어서 나는 interrupted·canceled 는 알릴 일이 아닙니다.) */
   u.onerror = (e) => {
+    clearTimeout(sayWatch);
     btn.classList.remove('play');
     const err = e && e.error;
     if (err === 'interrupted' || err === 'canceled') return;
-    toast('이 기기에 영어 음성이 없어 재생하지 못했어요');
+    if (!retryPlain) { say(btn, true); return; }      // 기본 음성으로 한 번 더
+    toast(enVoices().length
+      ? '음성이 재생되지 않았어요. 서랍에서 다른 음성을 골라 보세요'
+      : '이 기기에 영어 음성이 없어 재생하지 못했어요');
   };
+
   speechSynthesis.speak(u);
+
+  /* 엣지의 온라인 음성 등은 오류도 없이 조용히 끝나기도 합니다.
+     1초 안에 시작되지 않으면 기본 음성으로 한 번 더 시도합니다. */
+  sayWatch = setTimeout(() => {
+    if (started) return;
+    btn.classList.remove('play');
+    if (!retryPlain) { say(btn, true); return; }
+    toast(enVoices().length
+      ? '음성이 재생되지 않았어요. 기기 음량과 음성 설정을 확인해 주세요'
+      : '이 기기에 영어 음성이 없어 재생하지 못했어요');
+  }, 1000);
 }
 
 // ====================================================
 // 앱 껍데기 — DAY 서랍 · 검색 · 모드 · 하단 독
 // ====================================================
 function openDrawer() {
+  buildVoiceRow();
   document.getElementById('drawer').classList.add('open');
   document.getElementById('scrim').classList.add('open');
   document.getElementById('btnDays').classList.add('on');

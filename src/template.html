@@ -13,8 +13,18 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icons-app/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons-app/icon-192.png">
+<script>/* 저장된 테마를 그리기 전에 적용 — 깜빡임 방지 */
+try{var t=localStorage.getItem('english-room-theme');if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <title>매일 영어 · OPIc IH 실전 표현 1000</title>
 <style>
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ============================================================
    TOKENS
    ============================================================ */
@@ -44,53 +54,26 @@
   --shadow:     0 1px 2px rgba(22,35,61,.05), 0 6px 18px -10px rgba(22,35,61,.18);
   --shadow-up:  0 -1px 0 var(--line), 0 -8px 24px -14px rgba(22,35,61,.28);
 
-  --sans: -apple-system, BlinkMacSystemFont, 'Pretendard Variable', Pretendard,
-          'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
-  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
-           'Times New Roman', serif;
+  --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+          'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+  --serif: var(--sans);          /* 영어도 같은 글꼴로 통일 */
 
   --fs: 1;          /* 글자 크기 배율 */
   --safe-b: env(safe-area-inset-b, 0px);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --ink:        #e7ecf5;
-    --ink-2:      #a7b2c6;
-    --ink-3:      #74809a;
-    --bg:         #10151f;
-    --surface:    #161d2b;
-    --surface-2:  #1d2637;
-    --line:       #29334a;
-    --line-soft:  #212a3d;
-
-    --word:       #7ea4f5;
-    --word-bg:    #1c2947;
-    --phrase:     #55c3b7;
-    --phrase-bg:  #123331;
-    --sent:       #e0a75d;
-    --sent-bg:    #33260f;
-
-    --star:       #f0b73f;
-    --ok:         #4fbb84;
-    --ok-bg:      #123326;
-    --no:         #e8737f;
-    --no-bg:      #35181d;
-
-    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
-    --shadow-up:  0 -1px 0 var(--line), 0 -10px 28px -16px rgba(0,0,0,.8);
+  :root:not([data-theme]) {
+    --ink:#e7ecf5; --ink-2:#a7b2c6; --ink-3:#74809a;
+    --bg:#10151f; --surface:#161d2b; --surface-2:#1d2637;
+    --line:#29334a; --line-soft:#212a3d;
+    --word:#7ea4f5; --word-bg:#1c2947;
+    --phrase:#55c3b7; --phrase-bg:#123331;
+    --sent:#e0a75d; --sent-bg:#33260f;
+    --star:#f0b73f; --ok:#4fbb84; --ok-bg:#123326; --no:#e8737f; --no-bg:#35181d;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+    --shadow-up:0 -1px 0 #29334a, 0 -10px 28px -16px rgba(0,0,0,.8);
   }
-}
-:root[data-theme="dark"] {
-  --ink:#e7ecf5; --ink-2:#a7b2c6; --ink-3:#74809a;
-  --bg:#10151f; --surface:#161d2b; --surface-2:#1d2637;
-  --line:#29334a; --line-soft:#212a3d;
-  --word:#7ea4f5; --word-bg:#1c2947;
-  --phrase:#55c3b7; --phrase-bg:#123331;
-  --sent:#e0a75d; --sent-bg:#33260f;
-  --star:#f0b73f; --ok:#4fbb84; --ok-bg:#123326; --no:#e8737f; --no-bg:#35181d;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
-  --shadow-up:0 -1px 0 var(--line), 0 -10px 28px -16px rgba(0,0,0,.8);
 }
 :root[data-theme="light"] {
   --ink:#16233d; --ink-2:#46536c; --ink-3:#7c8698;
@@ -101,12 +84,42 @@
   --sent:#b8792a; --sent-bg:#fbf1e2;
   --star:#e8a317; --ok:#2f9461; --ok-bg:#e8f5ee; --no:#d1495b; --no-bg:#fbebed;
   --shadow:0 1px 2px rgba(22,35,61,.05), 0 6px 18px -10px rgba(22,35,61,.18);
-  --shadow-up:0 -1px 0 var(--line), 0 -8px 24px -14px rgba(22,35,61,.28);
+  --shadow-up:0 -1px 0 #e4e9f2, 0 -8px 24px -14px rgba(22,35,61,.28);
+}
+:root[data-theme="sepia"] {
+  --ink:#3f3423; --ink-2:#6b5c45; --ink-3:#97866c;
+  --bg:#f7f1e3; --surface:#fdf9f0; --surface-2:#f0e8d6;
+  --line:#e2d7c0; --line-soft:#ece3d1;
+  --word:#2b56a8; --word-bg:#e6e9f2;
+  --phrase:#2f6f5f; --phrase-bg:#e2ece5;
+  --sent:#9a6b25; --sent-bg:#f2e6cf;
+  --star:#c8901c; --ok:#3f7d54; --ok-bg:#e6efe0; --no:#b2483f; --no-bg:#f4e2dc;
+  --shadow:0 1px 2px rgba(63,52,35,.06), 0 6px 18px -10px rgba(63,52,35,.22);
+  --shadow-up:0 -1px 0 #e2d7c0, 0 -8px 24px -14px rgba(63,52,35,.3);
+}
+:root[data-theme="gray"] {
+  --ink:#1f2733; --ink-2:#4a5563; --ink-3:#7d8896;
+  --bg:#eceff3; --surface:#f9fafc; --surface-2:#e4e8ee;
+  --line:#d5dae2; --line-soft:#e2e6ec;
+  --word:#2f5fd0; --word-bg:#e5ebfa;
+  --phrase:#0f7a72; --phrase-bg:#e2efed;
+  --sent:#9d6c24; --sent-bg:#f5ecdd;
+  --star:#d49a15; --ok:#2f9461; --ok-bg:#e3f0e8; --no:#c9455a; --no-bg:#f7e3e6;
+  --shadow:0 1px 2px rgba(31,39,51,.06), 0 6px 18px -10px rgba(31,39,51,.25);
+  --shadow-up:0 -1px 0 #d5dae2, 0 -8px 24px -14px rgba(31,39,51,.3);
+}
+:root[data-theme="dark"] {
+  --ink:#e7ecf5; --ink-2:#a7b2c6; --ink-3:#74809a;
+  --bg:#10151f; --surface:#161d2b; --surface-2:#1d2637;
+  --line:#29334a; --line-soft:#212a3d;
+  --word:#7ea4f5; --word-bg:#1c2947;
+  --phrase:#55c3b7; --phrase-bg:#123331;
+  --sent:#e0a75d; --sent-bg:#33260f;
+  --star:#f0b73f; --ok:#4fbb84; --ok-bg:#123326; --no:#e8737f; --no-bg:#35181d;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+  --shadow-up:0 -1px 0 #29334a, 0 -10px 28px -16px rgba(0,0,0,.8);
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 /* display를 지정한 요소에도 hidden이 먹도록 */
 [hidden] { display: none !important; }
@@ -713,10 +726,12 @@ body.hide-en .card.reveal .ex-en { filter: none; opacity: 1; }
       </div>
     </div>
     <div class="row">
-      <div class="row-l"><div class="rt">화면 테마</div><div class="rs">기기 설정을 따르거나 직접 선택</div></div>
+      <div class="row-l"><div class="rt">화면 테마</div><div class="rs">토익 보카·홈과 함께 바뀝니다</div></div>
       <div class="pill-set" id="setTheme">
         <button data-v="auto" class="on">자동</button>
         <button data-v="light">라이트</button>
+        <button data-v="sepia">세피아</button>
+        <button data-v="gray">그레이</button>
         <button data-v="dark">다크</button>
       </div>
     </div>
@@ -856,6 +871,10 @@ window.TOPICS = [];
     var raw = localStorage.getItem(KEY);
     if (raw) { var p = JSON.parse(raw); for (var k in p) if (k in S) S[k] = p[k]; }
   } catch (e) {}
+  try {
+    var shared = localStorage.getItem('english-room-theme');
+    if (shared) S.theme = shared;
+  } catch (e) {}
   var saveT = null;
   function save() {
     clearTimeout(saveT);
@@ -908,38 +927,68 @@ window.TOPICS = [];
     toastT = setTimeout(function () { el.classList.remove('on'); }, 1400);
   }
 
-  /* ---------- TTS ---------- */
+  /* ---------- TTS ----------
+     기기에 설치된(오프라인) 음성을 먼저 고릅니다. 엣지의 'Online (Natural)'
+     음성은 인터넷이 막히면 소리 없이 끝나는 일이 있어 뒤로 미룹니다.
+     토익 보카에서 고른 음성이 있으면 그걸 그대로 씁니다. */
+  var VOICE_KEY = 'english-room-voice';
   var voice = null;
+  function enVoices() {
+    if (!window.speechSynthesis) return [];
+    var out = [], vs = speechSynthesis.getVoices();
+    for (var i = 0; i < vs.length; i++) if (/^en/i.test(vs[i].lang)) out.push(vs[i]);
+    return out;
+  }
   function pickVoice() {
-    if (!window.speechSynthesis) return;
-    var vs = speechSynthesis.getVoices();
-    for (var i = 0; i < vs.length; i++) {
-      if (/en[-_]US/i.test(vs[i].lang) && /Samantha|Google US|Aria|Jenny|Natural/i.test(vs[i].name)) { voice = vs[i]; return; }
-    }
-    for (var j = 0; j < vs.length; j++) if (/^en/i.test(vs[j].lang)) { voice = vs[j]; return; }
+    var vs = enVoices();
+    if (!vs.length) { voice = null; return; }
+    var saved = null;
+    try { saved = localStorage.getItem(VOICE_KEY); } catch (e) {}
+    var i;
+    if (saved) for (i = 0; i < vs.length; i++) if (vs[i].name === saved) { voice = vs[i]; return; }
+    var local = [];
+    for (i = 0; i < vs.length; i++) if (vs[i].localService && !/online/i.test(vs[i].name)) local.push(vs[i]);
+    function us(a) { for (var k = 0; k < a.length; k++) if (/en[-_]US/i.test(a[k].lang)) return a[k]; return null; }
+    voice = us(local) || local[0] || us(vs) || vs[0] || null;
   }
   if (window.speechSynthesis) {
     pickVoice();
     speechSynthesis.onvoiceschanged = pickVoice;
   }
-  function speak(text, btn) {
+  var speakWatch = null;
+  function speak(text, btn, retryPlain) {
     if (!window.speechSynthesis) { toast('이 브라우저는 음성을 지원하지 않아요'); return; }
+    clearTimeout(speakWatch);
     speechSynthesis.cancel();
+    if (!voice) pickVoice();
     var u = new SpeechSynthesisUtterance(plain(text));
     u.lang = 'en-US'; u.rate = 0.92; u.pitch = 1;
-    if (voice) u.voice = voice;
-    if (btn) {
-      btn.classList.add('play');
-      u.onend = function () { btn.classList.remove('play'); };
-    }
+    if (voice && !retryPlain) u.voice = voice;
+    var started = false;
+    if (btn) btn.classList.add('play');
+    u.onstart = function () { started = true; clearTimeout(speakWatch); };
+    u.onend = function () { clearTimeout(speakWatch); if (btn) btn.classList.remove('play'); };
     /* 기기에 영어 음성이 없으면 소리 없이 끝나므로 이유를 알려줍니다. */
     u.onerror = function (e) {
+      clearTimeout(speakWatch);
       if (btn) btn.classList.remove('play');
       var err = e && e.error;
       if (err === 'interrupted' || err === 'canceled') return;
-      toast('이 기기에 영어 음성이 없어 재생하지 못했어요');
+      if (!retryPlain) { speak(text, btn, true); return; }
+      toast(enVoices().length
+        ? '음성이 재생되지 않았어요. 기기 음량과 음성 설정을 확인해 주세요'
+        : '이 기기에 영어 음성이 없어 재생하지 못했어요');
     };
     speechSynthesis.speak(u);
+    /* 오류도 없이 조용히 끝나는 경우(엣지 온라인 음성 등) 기본 음성으로 한 번 더 */
+    speakWatch = setTimeout(function () {
+      if (started) return;
+      if (btn) btn.classList.remove('play');
+      if (!retryPlain) { speak(text, btn, true); return; }
+      toast(enVoices().length
+        ? '음성이 재생되지 않았어요. 기기 음량과 음성 설정을 확인해 주세요'
+        : '이 기기에 영어 음성이 없어 재생하지 못했어요');
+    }, 1000);
   }
 
   /* ============================================================
@@ -1546,9 +1595,12 @@ window.TOPICS = [];
     var bs = $('#setFs').children;
     for (var i = 0; i < bs.length; i++) bs[i].classList.toggle('on', bs[i].dataset.v === S.fs);
   }
+  /* 테마는 홈·토익 보카와 같은 칸에 저장해 세 화면이 함께 바뀝니다. */
+  var THEME_KEY = 'english-room-theme';
   function applyTheme() {
     if (S.theme === 'auto') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', S.theme);
+    try { localStorage.setItem(THEME_KEY, S.theme); } catch (e) {}
     var bs = $('#setTheme').children;
     for (var i = 0; i < bs.length; i++) bs[i].classList.toggle('on', bs[i].dataset.v === S.theme);
   }

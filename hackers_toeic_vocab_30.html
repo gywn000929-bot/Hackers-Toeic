@@ -126,6 +126,8 @@ try{var t=localStorage.getItem('english-room-theme');if(t&&t!=='auto')document.d
   .hd {
     position: sticky; top: 0; z-index: 200;
     background: var(--white); border-bottom: 1px solid var(--gray-mid);
+    /* 아이폰 설치 앱은 상태 표시줄이 화면을 덮으므로 그만큼 비웁니다 */
+    padding-top: env(safe-area-inset-top, 0px);
   }
   .hd-in { max-width: 760px; margin: 0 auto; padding: 12px 16px 0; }
   .hd-top { display: flex; align-items: center; gap: 10px; }
@@ -192,7 +194,8 @@ try{var t=localStorage.getItem('english-room-theme');if(t&&t!=='auto')document.d
   .drawer.open { transform: none; box-shadow: 0 0 40px rgba(22,35,61,0.18); }
   .drawer-hd {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 12px 10px 18px; border-bottom: 1px solid var(--gray-mid);
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 12px 10px 18px;
+    border-bottom: 1px solid var(--gray-mid);
     font-size: 0.78rem; font-weight: 800; color: var(--navy-light); letter-spacing: 0.6px;
   }
   .voice-row {

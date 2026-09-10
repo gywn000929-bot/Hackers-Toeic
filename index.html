@@ -284,7 +284,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   <p class="foot">
     학습 기록은 이 기기에만 저장됩니다.<br>
     한 번 열어두면 인터넷이 없어도 그대로 열립니다.<br>
-    <span class="ver">버전 <b id="appVer">v12</b></span>
+    <span class="ver">버전 <b id="appVer">v13</b></span>
   </p>
 </div>
 
@@ -387,19 +387,25 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
      아이폰은 오디오 세션이 잠겨 있으면 발음이 소리 없이 끝나기도 해서,
      무음 오실레이터로 세션을 깨운 뒤 실제로 읽혀 봅니다. */
   var audioCtx = null;
-  function unlockAudio() {
+
+  /* 짧은 '삐' 소리를 냅니다. 이게 들리는지 여부로
+     기기가 무음인지 / 발음만 안 나는지 가려낼 수 있습니다. */
+  function beep(volume) {
     try {
       var AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return '지원 안 함';
       if (!audioCtx) audioCtx = new AC();
       if (audioCtx.state === 'suspended') audioCtx.resume();
       var o = audioCtx.createOscillator(), g = audioCtx.createGain();
-      g.gain.value = 0;
+      o.type = 'sine'; o.frequency.value = 880;
+      g.gain.value = volume;
       o.connect(g); g.connect(audioCtx.destination);
-      o.start(0); o.stop(audioCtx.currentTime + 0.03);
+      var t = audioCtx.currentTime;
+      o.start(t); o.stop(t + (volume ? 0.25 : 0.03));
       return audioCtx.state;
     } catch (e) { return '실패: ' + e.message; }
   }
+  function unlockAudio() { return beep(0); }
 
   var lastReport = '';
   function report(lines) {
@@ -416,7 +422,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
                      window.navigator.standalone === true;
     var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    var session = unlockAudio();
+    var session = beep(0.12);            // 들리는 '삐' — 무음 모드 가려내기용
 
     if (!window.speechSynthesis) {
       report([['실행 방식', standalone ? '설치한 앱' : '브라우저'],
@@ -439,11 +445,15 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
         ['실행 방식', standalone ? '설치한 앱' : '브라우저'],
         ['기기', isIOS ? '아이폰·아이패드' : '그 외'],
         ['영어 음성', vs.length + '개' + (vs.length ? ' (예: ' + vs[0].name + ')' : '')],
-        ['오디오 세션', String(session)],
+        ['오디오 세션', String(audioCtx ? audioCtx.state : session)],
         ['재생 이벤트', events.length ? events.join(' → ') : '아무 일도 없었음'],
         ['판단', !vs.length ? '기기에 영어 음성이 없습니다'
-          : events.indexOf('시작') >= 0 ? '재생은 됐습니다 — 안 들리면 무음 스위치·볼륨·출력 장치를 확인해 주세요'
-          : '소리 없이 끝났습니다 — 아래 결과를 복사해 알려주세요']
+          : events.indexOf('시작') >= 0
+            ? (isIOS
+              ? '재생은 정상입니다. 아이폰은 발음이 <b>벨소리 채널</b>을 타서 <b>무음 모드면 소리가 나지 않습니다</b> — 방금 «삐» 소리도 안 들렸다면 측면 무음 스위치를 해제하고 볼륨을 올려 주세요'
+              : '재생은 됐습니다 — 안 들리면 볼륨·출력 장치를 확인해 주세요')
+            : '소리 없이 끝났습니다 — 아래 결과를 복사해 알려주세요'],
+        ['«삐» 소리', '테스트할 때 짧게 울렸습니다. 이것도 안 들렸다면 기기가 무음이거나 볼륨이 0입니다']
       ]);
     }, 2600);
     $('#soundOut').innerHTML = '테스트 중… 잠시만요';

@@ -4,7 +4,7 @@
    · hackers_toeic_vocab_30.html 토익 보카
    페이지가 자체 완결형이라 한 번만 받아두면 비행기 모드에서도 열립니다.
    내용을 고쳐 배포할 때는 CACHE 버전을 올리세요. */
-const CACHE = 'english-room-v11';
+const CACHE = 'english-room-v12';
 
 /* 앱 껍데기 — 설치할 때 미리 받아둡니다. */
 const HOME = './index.html';
@@ -54,8 +54,21 @@ function shellFor(url) {
    오프라인일 때는 마지막으로 받아둔 버전으로 열립니다. */
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
+
+  /* 화면(HTML)은 브라우저 HTTP 캐시를 건너뛰고 받아옵니다.
+     GitHub Pages 가 max-age=600 을 붙여 주기 때문에, 그냥 fetch 하면
+     10분 지난 사본이 돌아와 새 버전이 늦게 반영됩니다. */
+  var isPage = e.request.mode === 'navigate' ||
+               (e.request.destination === 'document') ||
+               /\.html($|\?)/.test(e.request.url) ||
+               /\/$/.test(new URL(e.request.url).pathname);
+  var netReq = e.request;
+  if (isPage) {
+    try { netReq = new Request(e.request, { cache: 'reload' }); } catch (err) {}
+  }
+
   e.respondWith(
-    fetch(e.request)
+    fetch(netReq)
       .then(function (res) {
         if (res && (res.ok || res.type === 'opaque')) {
           var copy = res.clone();

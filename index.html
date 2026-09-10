@@ -210,6 +210,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .sound-out.on { display: block; }
 .sound-out b { color: var(--ink); }
+.ver { display: inline-block; margin-top: 6px; opacity: .8; }
+.ver b { font-weight: 700; color: var(--ink-2); }
 .foot { margin-top: 18px; font-size: .72rem; color: var(--ink-3); line-height: 1.7; text-align: center; }
 </style>
 </head>
@@ -281,7 +283,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
   <p class="foot">
     학습 기록은 이 기기에만 저장됩니다.<br>
-    한 번 열어두면 인터넷이 없어도 그대로 열립니다.
+    한 번 열어두면 인터넷이 없어도 그대로 열립니다.<br>
+    <span class="ver">버전 <b id="appVer">v11</b></span>
   </p>
 </div>
 
@@ -481,6 +484,14 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./sw.js').catch(function () {});
+    });
+    /* 앱을 열 때마다, 그리고 다시 앞으로 나올 때마다 새 버전이 있는지 확인합니다 */
+    function checkUpdate() {
+      navigator.serviceWorker.getRegistration().then(function (r) { if (r) r.update(); }).catch(function () {});
+    }
+    window.addEventListener('load', checkUpdate);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) checkUpdate();
     });
     /* 설치한 앱이 옛 파일을 붙들고 있지 않도록, 새 버전이 자리를 잡으면 한 번 새로고침 */
     var hadController = !!navigator.serviceWorker.controller;

@@ -2217,6 +2217,14 @@ window.TOPICS = [];
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./sw.js').catch(function () {});
     });
+    /* 앱을 열 때마다, 그리고 다시 앞으로 나올 때마다 새 버전이 있는지 확인합니다 */
+    var checkUpdate = function () {
+      navigator.serviceWorker.getRegistration().then(function (r) { if (r) r.update(); }).catch(function () {});
+    };
+    window.addEventListener('load', checkUpdate);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) checkUpdate();
+    });
     /* 설치한 앱이 옛 파일을 붙들고 있지 않도록, 새 버전이 자리를 잡으면 한 번 새로고침 */
     var hadController = !!navigator.serviceWorker.controller;
     var swReloaded = false;
